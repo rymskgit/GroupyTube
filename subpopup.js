@@ -43,8 +43,8 @@
                 if (frame.dataType === "group-name") {
                     chrome.runtime.sendMessage({ type: "import-group", data: groups });
                 }
-                else if (frame.dataType === "channel-group") {
-                    chrome.runtime.sendMessage({ type: "import-channel-group", data: groups });
+                else if (frame.dataType === "grouping") {
+                    chrome.runtime.sendMessage({ type: "import-grouping", data: groups });
                 }
 
                 frame.style.display = 'none';

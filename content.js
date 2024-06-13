@@ -11,7 +11,7 @@
             display:flex;
             margin-left:15px;
             margin-top:5px;
-            margin-bottom:5px;      
+            margin-bottom:5px;
         }
 
         .group-icon{
@@ -40,7 +40,6 @@
     }
 
     chrome.storage.local.get("settings", function (data) {
-        //console.log(data);
 
         if (data.settings === undefined || data.settings === null) {
             config.settings = [];
@@ -100,6 +99,7 @@
     function createGroupElement(groupAccounts, channels) {
 
         const ytd_guide_entry_group_renderer = document.createElement("ytd-guide-entry-group-renderer");
+
         groupAccounts.forEach((account) => {
             const value = channels.find((channel) => channel.account == account) ?? null;
             if (value !== null) {

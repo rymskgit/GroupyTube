@@ -15,7 +15,7 @@
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // create channel group table row
+    // create grouping table row
     function createChannelRow(channel) {
 
         const channelRow = document.createElement("tr");
@@ -60,7 +60,7 @@
             }
 
             const id = row.previousSibling.getAttribute("id");
-            if (id === "channel-group-table-header") {
+            if (id === "grouping-table-header") {
                 return;
             }
 
@@ -158,7 +158,7 @@
     }
 
     // update group names table
-    function updateGroupNames(groups) {
+    function updateGroupNamesTable(groups) {
 
         const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
         if (groupNameTbl === null) {
@@ -170,7 +170,17 @@
             groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
         }
 
-        groups.forEach((group) => {
+        const sortedGroup = groups.sort((a, b) => {
+            if (a.name === b.name) {
+                return a.order - b.order;
+            } else if (a.name < b.name) {
+                return -1;
+            }
+
+            return 1;
+        })
+
+        sortedGroup.forEach((group) => {
             const groupRow = createGroupNameRow(group.name);
             groupNameTbl.appendChild(groupRow);
         });
@@ -202,10 +212,10 @@
         });
     }
 
-    // update all channel group selector on channel table
+    // update all group selector on grouping table
     function updateGroupSelectorAll(groups) {
 
-        const query = document.querySelectorAll('#channel-group-table tbody #group-select') ?? null;
+        const query = document.querySelectorAll('#grouping-table tbody #group-select') ?? null;
         const groupSelectors = Array.from(query);
 
         // update group selectors on channel table 
@@ -214,10 +224,10 @@
         });
     }
 
-    // update channel group table
-    function updateChannelGroup(settings) {
+    // update grouping table
+    function updateGroupingTable(settings) {
 
-        const channelGrpTbl = document.querySelector('#channel-group-table tbody') ?? null;
+        const channelGrpTbl = document.querySelector('#grouping-table tbody') ?? null;
         if (channelGrpTbl === null) {
             return;
         }
@@ -240,13 +250,13 @@
             if (a.groupName === b.groupName) {
                 return a.order - b.order
             }
-            else if (a.groupName <= b.groupName) {
+            else if (a.groupName < b.groupName) {
                 return -1;
             }
             return 1;
         });
 
-        // set on channel group table and update group selector
+        // set on grouping table and update group selector
         channelSettings.forEach((value) => {
             const channelRow = createChannelRow({ title: value.title, account: value.account, group: value.groupName });
             channelGrpTbl.appendChild(channelRow);
@@ -263,7 +273,7 @@
 
     // realod last save for group name
     function onReloadGroupNameClick() {
-        updateGroupNames(lastsave_groups);
+        updateGroupNamesTable(lastsave_groups);
     }
 
     // add group name for group name table button click
@@ -371,17 +381,17 @@
         frame.style.display = "unset";
     }
 
-    // reload last save for channel group
-    function onReloadChannelGroupClick() {
+    // reload last save for grouping
+    function onReloadGroupingClick() {
 
-        updateChannelGroup(lastsave_settings);
+        updateGroupingTable(lastsave_settings);
 
-        updateStatusBar(`channel groups reload completed.`)
+        updateStatusBar(`grouping reload completed.`)
     }
 
-    // create json channel group
-    function createJsonChannelGroup() {
-        const query = document.querySelectorAll('#channel-group-table tbody #channel-row') ?? null;
+    // create json grouping
+    function createJsonGrouping() {
+        const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
         const channels = Array.from(query)
         const groups = lastsave_groups;
 
@@ -408,21 +418,21 @@
         return settings;
     }
 
-    // save channel group button click event handler
-    function onSaveChannelGroupClick() {
+    // save grouping button click event handler
+    function onSaveGroupingClick() {
 
-        const settings = createJsonChannelGroup();
+        const settings = createJsonGrouping();
 
-        // save to chrome storage for channel group
+        // save to chrome storage for grouping
         chrome.storage.local.set({ settings: settings }, () => {
             lastsave_settings = settings;
 
-            updateStatusBar(`channel groups save completed.`);
+            updateStatusBar(`grouping save completed.`);
         });
     }
 
-    // export channel group
-    function onExportChannelGroupClick() {
+    // export grouping
+    function onExportGroupingClick() {
 
         const frame = document.querySelector('#subpopup-overlay') ?? null;
         if (frame === null) {
@@ -440,15 +450,15 @@
             return;
         }
 
-        const settings = createJsonChannelGroup();
+        const settings = createJsonGrouping();
         jsonText.value = JSON.stringify(settings);
 
-        frame.dataType = "channel-group";
+        frame.dataType = "grouping";
         frame.style.display = "unset";
     }
 
-    // import channel group
-    function onImportChannelGroupClick() {
+    // import grouping
+    function onImportGroupingClick() {
 
         const frame = document.querySelector('#subpopup-overlay') ?? null;
         if (frame === null) {
@@ -468,7 +478,7 @@
 
         jsonText.value = "";
 
-        frame.dataType = "channel-group";
+        frame.dataType = "grouping";
         frame.style.display = "unset";
     }
 
@@ -493,12 +503,12 @@
             const values = Array.from(data.groups);
             lastsave_groups = values;
 
-            updateGroupNames(lastsave_groups);
+            updateGroupNamesTable(lastsave_groups);
         });
 
         chrome.storage.local.get("settings", function (data) {
 
-            const channelGrpTbl = document.querySelector('#channel-group-table tbody') ?? null;
+            const channelGrpTbl = document.querySelector('#grouping-table tbody') ?? null;
             if (channelGrpTbl === null) {
                 return;
             }
@@ -513,7 +523,7 @@
             const settings = Array.from(data.settings);
             lastsave_settings = settings;
 
-            updateChannelGroup(settings);
+            updateGroupingTable(settings);
         });
     }
 
@@ -522,15 +532,15 @@
 
         if (message.type === "import-group") {
             const groups = Array.from(message.data);
-            updateGroupNames(groups);
+            updateGroupNamesTable(groups);
             onSaveGroupNameClick();
             updateStatusBar(`group names import completed.`);
         }
-        else if (message.type === "import-channel-group") {
+        else if (message.type === "import-grouping") {
             const settings = Array.from(message.data);
-            updateChannelGroup(settings);
-            onSaveChannelGroupClick();
-            updateStatusBar(`channel groups import completed.`);
+            updateGroupingTable(settings);
+            onSaveGroupingClick();
+            updateStatusBar(`grouping import completed.`);
         }
     });
 
@@ -562,7 +572,7 @@
             });
         }
 
-        const saveGroupNameBtn = document.querySelector('#save-group-list') ?? null;
+        const saveGroupNameBtn = document.querySelector('#save-group-name') ?? null;
         if (saveGroupNameBtn !== null) {
             saveGroupNameBtn.addEventListener('click', (event) => {
                 onSaveGroupNameClick();
@@ -583,31 +593,31 @@
             });
         }
 
-        const reloadChannelGroupBtn = document.querySelector('#reload-channel-group') ?? null;
-        if (reloadChannelGroupBtn !== null) {
-            reloadChannelGroupBtn.addEventListener('click', (event) => {
-                onReloadChannelGroupClick();
+        const reloadGroupingBtn = document.querySelector('#reload-grouping') ?? null;
+        if (reloadGroupingBtn !== null) {
+            reloadGroupingBtn.addEventListener('click', (event) => {
+                onReloadGroupingClick();
             });
         }
 
-        const saveChannelGroupBtn = document.querySelector('#save-channel-group') ?? null;
-        if (saveChannelGroupBtn !== null) {
-            saveChannelGroupBtn.addEventListener('click', (event) => {
-                onSaveChannelGroupClick();
+        const saveGroupingBtn = document.querySelector('#save-grouping') ?? null;
+        if (saveGroupingBtn !== null) {
+            saveGroupingBtn.addEventListener('click', (event) => {
+                onSaveGroupingClick();
             });
         }
 
-        const exportChannelGroupBtn = document.querySelector('#export-channel-group') ?? null;
-        if (exportChannelGroupBtn !== null) {
-            exportChannelGroupBtn.addEventListener('click', (event) => {
-                onExportChannelGroupClick();
+        const exportGroupingBtn = document.querySelector('#export-grouping') ?? null;
+        if (exportGroupingBtn !== null) {
+            exportGroupingBtn.addEventListener('click', (event) => {
+                onExportGroupingClick();
             });
         }
 
-        const importChannelGroupBtn = document.querySelector('#import-channel-group') ?? null;
-        if (importChannelGroupBtn !== null) {
-            importChannelGroupBtn.addEventListener('click', (event) => {
-                onImportChannelGroupClick();
+        const importGroupingBtn = document.querySelector('#import-grouping') ?? null;
+        if (importGroupingBtn !== null) {
+            importGroupingBtn.addEventListener('click', (event) => {
+                onImportGroupingClick();
             });
         }
     }

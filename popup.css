@@ -88,7 +88,7 @@ option {
     color: #CCCCCC;
 }
 
-.group-button-area {
+.group-name-button-area {
     display: flex;
     position: relative;
     left: 70px
@@ -121,13 +121,13 @@ option {
     width: 18px;
 }
 
-.channel-button-area {
+.grouping-button-area {
     display: flex;
     position: relative;
     left: 600px
 }
 
-.channel-group-table-scroll {
+.grouping-table-scroll {
     max-height: 480px;
     width: max-content;
     overflow-y: scroll;
@@ -144,8 +144,8 @@ option {
     border: solid;
     border-width: 1px;
     text-align: center;
-    color: #660000;
-    background-color: #CCCCCC;
+    color: #CCCCCC;
+    background-color: #000066;
 }
 
 #group-name-table {
@@ -156,11 +156,11 @@ option {
     min-width: 120px;
 }
 
-#header-order {
+#header-group-order {
     min-width: 80px;
 }
 
-#header-remove {
+#header-group-remove {
     min-width: 30px;
 }
 
@@ -185,10 +185,10 @@ option {
 #save-group-list,
 #export-group-name,
 #import-group-name,
-#reload-channel-group,
-#save-channel-group,
-#export-channel-group,
-#import-channel-group {
+#reload-grouping,
+#save-grouping,
+#export-grouping,
+#import-grouping {
     margin: 0px;
     margin-left: 5px;
     width: 32px;
