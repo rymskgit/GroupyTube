@@ -1,0 +1,37 @@
+{
+  "name": "Youtube Subscription Channel Grouping",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Youtube subscription channel goruping",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/down_allow.png",
+        "images/right_allow.png"
+      ],
+      "matches": [
+        "*://*.youtube.com/*"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "icon/icon16.png",
+    "48": "icon/icon48.png"
+  },
+  "permissions": [
+    "storage"
+  ]
+}

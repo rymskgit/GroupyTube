@@ -1,0 +1,31 @@
+body {
+    background-color: #666666;
+}
+
+textarea {
+    font-family: 'Meiryo' !important;
+    font-size: 12pt !important;
+    width: 100%;
+    height: 485px;
+    border: solid;
+    border-width: 1px;
+    resize: none;
+    background-color: #CCCCCC;
+    ;
+}
+
+#copy-json,
+#import-json,
+#close-popup {
+    margin: 0px;
+    margin-left: 5px;
+    width: 32px;
+    height: 32px;
+    scale: 0.7;
+}
+
+.button-area {
+    display: flex;
+    position: relative;
+    left: 20px
+}

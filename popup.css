@@ -1,0 +1,216 @@
+body {
+    background-color: #333333;
+    min-width: 760px;
+    overflow-x: scroll;
+}
+
+h1 {
+    font-size: 32pt;
+    text-decoration: underline;
+    color: #CCCCCC;
+}
+
+h2 {
+    font-size: 24pt;
+    text-decoration: underline;
+    color: #CCCCCC;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+table {
+    width: auto;
+    min-width: max-content;
+    border: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+    margin: 0px;
+    margin-left: 10px;
+}
+
+table tr:nth-child(odd) {
+    background-color: #555555;
+}
+
+table tr:nth-child(even) {
+    background-color: #333333;
+}
+
+td {
+    width: auto;
+    border: solid;
+    border-width: 1px;
+}
+
+button {
+    display: block;
+    height: 32px;
+    width: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: #555555;
+    color: #CCCCCC;
+}
+
+input[type="text"] {
+    height: 32px;
+    border: 0px;
+    background-color: #CCCCCC;
+    color: #333333;
+}
+
+input[type="checkbox"] {
+    min-width: 30px;
+    height: 18px;
+    border: 0px;
+    background-color: #CCCCCC;
+}
+
+select {
+    min-width: 120px;
+    height: auto;
+    border: 0px;
+    background-color: transparent;
+}
+
+option {
+    color: #666666
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.font-class {
+    font-family: 'Meiryo' !important;
+    font-size: 12pt !important;
+    font-style: normal;
+    color: #CCCCCC;
+}
+
+.group-button-area {
+    display: flex;
+    position: relative;
+    left: 70px
+}
+
+.header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.group-name-table-scroll {
+    max-height: 300px;
+    width: max-content;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.order-col {
+    display: flex;
+}
+
+.order-button {
+    margin: 2px;
+}
+
+.remove-img {
+    margin: 2px;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 18px;
+}
+
+.channel-button-area {
+    display: flex;
+    position: relative;
+    left: 600px
+}
+
+.channel-group-table-scroll {
+    max-height: 480px;
+    width: max-content;
+    overflow-y: scroll;
+    overflow-x: auto;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+#status-bar {
+    font-size: 14pt !important;
+    min-width: 750px;
+    height: 24px;
+    margin: 0px;
+    border: solid;
+    border-width: 1px;
+    text-align: center;
+    color: #660000;
+    background-color: #CCCCCC;
+}
+
+#group-name-table {
+    min-width: 250px;
+}
+
+#header-group-name {
+    min-width: 120px;
+}
+
+#header-order {
+    min-width: 80px;
+}
+
+#header-remove {
+    min-width: 30px;
+}
+
+#header-channel-name {
+    min-width: 350px;
+}
+
+#header-channel-account {
+    min-width: 180px;
+}
+
+#header-channel-group {
+    min-width: 120px;
+}
+
+#header-channel-order {
+    min-width: 80px;
+}
+
+#reload-group-name,
+#add-group-name,
+#save-group-list,
+#export-group-name,
+#import-group-name,
+#reload-channel-group,
+#save-channel-group,
+#export-channel-group,
+#import-channel-group {
+    margin: 0px;
+    margin-left: 5px;
+    width: 32px;
+    height: 32px;
+    scale: 0.7;
+}
+
+#subpopup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: 1000;
+}
+
+#subpopup-overlay iframe {
+    position: absolute;
+    width: 720px;
+    height: 560px;
+    top: 30px;
+    left: 30px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <title>Youtube Subscription Channel Grouping Setting</title>
+    <meta charset="UTF-8" />
+    <script type="text/javascript" src="./popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="./popup.css" />
+</head>
+
+<body>
+    <main>
+        <div id="status-bar">
+            <span class="font-class"></span>
+        </div>
+        <div id="subpopup-overlay">
+            <iframe id="subpopup" src="./subpopup.html"></iframe>
+        </div>
+        <div>
+            <h2>Channel Group Name</h2>
+            <div class="group-button-area">
+                <img id="reload-group-name" src="./images/reload.png" title="reload group" />
+                <img id="add-group-name" src="./images/plus.png" title="add group" />
+                <img id="save-group-list" src="./images/save.png" title="save group" />
+                <img id="export-group-name" src="./images/export.png" title="export group" />
+                <img id="import-group-name" src="./images/import.png" title="import group" />
+            </div>
+            <div class="group-name-table-scroll">
+                <table id="group-name-table" class="font-class">
+                    <tr id="group-name-table-header">
+                        <td class="header" id="header-group-name">Group Name</td>
+                        <td class="header" id="header-order">Order</td>
+                        <td class="header" id="header-remove"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div>
+            <h2>Channel Grouping</h2>
+            <div class="channel-button-area">
+                <img id="reload-channel-group" src="./images/reload.png" title="reload channel group" />
+                <img id="save-channel-group" src="./images/save.png" title="save channel group" />
+                <img id="export-channel-group" src="./images/export.png" title="export channel group" />
+                <img id="import-channel-group" src="./images/import.png" title="import channel group" />
+            </div>
+            <div class="channel-group-table-scroll">
+                <table id="channel-group-table" class="font-class">
+                    <tr id="channel-group-table-header">
+                        <td class="header" id="header-channel-name">Channel Name</td>
+                        <td class="header" id="header-channel-account">Channel Account</td>
+                        <td class="header" id="header-channel-group">Group</td>
+                        <td class="header" id="header-channel-order">Order</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
