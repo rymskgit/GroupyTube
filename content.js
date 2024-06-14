@@ -28,6 +28,15 @@
             color:whitesmoke;
             font-style:normal
         }
+
+        .dot-icon{
+            margin 0px;
+            margin-top:3px;
+            margin-left:10px;
+            width:12px;    
+            height:12px;
+            scale:0.7;
+        }
     `;
 
     head.appendChild(style);
@@ -51,9 +60,31 @@
 
     const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
     const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
+    const dotUrl = chrome.runtime.getURL("images/dot.png");
+
+    // update group status
+    function updateGroupStatus(element) {
+
+        const query = element.parentNode.querySelectorAll("ytd-guide-entry-renderer[line-end-style]");
+        const elements = Array.from(query);
+
+        const value = elements.find((e) => {
+            const line_end_style = e.getAttribute("line-end-style");
+            return line_end_style === "dot";
+        }) ?? null;
+
+        if (value === null) {
+            if (element.parentNode.previousElementSibling !== null) {
+                const dot_icon = element.parentNode.previousElementSibling.querySelector('#dot-icon') ?? null;
+                if (dot_icon !== null) {
+                    dot_icon.style.display = "none";
+                }
+            }
+        }
+    }
 
     // create channel group title element
-    function createGroupTitleElement(title, groupElement) {
+    function createGroupTitleElement(title, lineEndStyle, groupElement) {
 
         const group_title = document.createElement("div");
         group_title.classList.add("channel-group");
@@ -70,6 +101,19 @@
 
         group_title.append(title_icon);
         group_title.append(title_string);
+
+
+        const dot_icon = document.createElement("img");
+        dot_icon.setAttribute("src", dotUrl);
+        dot_icon.setAttribute("id", "dot-icon");
+        dot_icon.classList.add("dot-icon");
+        if (lineEndStyle === "dot") {
+            dot_icon.style.display = "unset";
+        }
+        else {
+            dot_icon.style.display = "none";
+        }
+        group_title.append(dot_icon);
 
         // add event handler
         group_title.addEventListener("mouseover", () => {
@@ -100,16 +144,26 @@
 
         const ytd_guide_entry_group_renderer = document.createElement("ytd-guide-entry-group-renderer");
 
+        let lineEndStyle = "";
         groupAccounts.forEach((account) => {
             const value = channels.find((channel) => channel.account == account) ?? null;
             if (value !== null) {
                 ytd_guide_entry_group_renderer.appendChild(value.element);
+
+                value.element.addEventListener("click", (event) => {
+                    value.element.setAttribute("line-end-style", "");
+                    updateGroupStatus(value.element);
+                });
+                const line_end_style = value.element.getAttribute("line-end-style");
+                if (line_end_style === "dot") {
+                    lineEndStyle = line_end_style;
+                }
             }
         });
         // once hidden
         ytd_guide_entry_group_renderer.style.display = "none";
 
-        return ytd_guide_entry_group_renderer;
+        return [ytd_guide_entry_group_renderer, lineEndStyle];
     }
 
     // create channel group element
@@ -132,8 +186,8 @@
 
         groups.forEach((gorup) => {
             if (gorup.name !== "") {
-                const ytd_guide_entry_group_renderer = createGroupElement(gorup.accounts, channels);
-                const group_title = createGroupTitleElement(gorup.name, ytd_guide_entry_group_renderer);
+                const [ytd_guide_entry_group_renderer, lineEndStyle] = createGroupElement(gorup.accounts, channels);
+                const group_title = createGroupTitleElement(gorup.name, lineEndStyle, ytd_guide_entry_group_renderer);
 
                 ytd_guide_section_renderer.appendChild(group_title);
                 ytd_guide_section_renderer.appendChild(ytd_guide_entry_group_renderer);

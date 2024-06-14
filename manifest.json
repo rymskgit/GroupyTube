@@ -20,7 +20,8 @@
     {
       "resources": [
         "images/down_allow.png",
-        "images/right_allow.png"
+        "images/right_allow.png",
+        "images/dot.png"
       ],
       "matches": [
         "*://*.youtube.com/*"
