@@ -316,6 +316,7 @@
         // get subscription channel list
         const channels = getSubscriptionChannels();
 
+        console.log(channels);
         // save subscription channel data
         saveChannelData(channels);
 

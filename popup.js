@@ -231,32 +231,52 @@
 
         const groups = lastsave_groups;
 
-        // if exists in channels, get in settings and sort by order
+        // if exists in channels, get in settings and sort by group order
         const channelSettings = subscription_channels.map((channel) => {
             const setting = settings.find((value) => value.account == channel.account) ?? null;
             if (setting === null) {
-                return { title: channel.title, account: channel.account, groupName: "", order: 0 };
+                return { title: channel.title, account: channel.account, group: { name: "", order: 0 }, order: 0 };
             }
-            return { title: channel.title, account: channel.account, groupName: setting.groupname, order: setting.order };
-        }).sort((a, b) => {
-            if (a.groupName === b.groupName) {
-                return a.order - b.order
+            const group = groups.find((value) => value.name === setting.groupname) ?? null;
+            if (group !== null) {
+                return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: group.order }, order: setting.order };
             }
-            else if (a.groupName < b.groupName) {
-                return -1;
+            else {
+                return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: 999 }, order: setting.order };
             }
-            return 1;
+        });
+
+        // if exists in settings and not exists in subscription_channels, add in channelSettings
+        settings.forEach((setting) => {
+            const channel = subscription_channels.find((channel) => channel.account === setting.account) ?? null;
+            if (channel === null) {
+                const group = groups.find((value) => value.name === setting.groupname) ?? null;
+                if (group !== null) {
+                    channelSettings.push({ title: setting.title, account: setting.account, group: { name: setting.groupname, order: group.order }, order: setting.order });
+                }
+                else {
+                    channelSettings.push({ title: setting.title, account: setting.account, group: { name: setting.groupname, order: 999 }, order: setting.order });
+                }
+            }
         });
 
         // set on grouping table and update group selector
-        channelSettings.forEach((value) => {
-            const channelRow = createChannelRow({ title: value.title, account: value.account, group: value.groupName });
+        channelSettings = channelSettings.sort((a, b) => {
+            if (a.group.order === b.group.order) {
+                return a.order - b.order
+            }
+            else if (a.group.order < b.group.order) {
+                return -1;
+            }
+            return 1;
+        }).forEach((value) => {
+            const channelRow = createChannelRow({ title: value.title, account: value.account });
             channelGrpTbl.appendChild(channelRow);
 
             const groupSelector = channelRow.querySelector('#group-select') ?? null;
             if (groupSelector !== null) {
                 updateGroupSelector(groupSelector, groups);
-                groupSelector.value = value.groupName;
+                groupSelector.value = value.group.name;
             }
         });
     }
