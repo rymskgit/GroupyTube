@@ -1,4 +1,4 @@
-(function () {
+(async function () {
 
     const config = {};
 
@@ -48,15 +48,26 @@
             .replace(/"/g, '&quot;')
     }
 
-    chrome.storage.local.get("settings", function (data) {
+    async function getConfig() {
+        await chrome.storage.local.get("groups", function (data) {
 
-        if (data.settings === undefined || data.settings === null) {
-            config.settings = [];
-        }
-        else {
-            config.settings = data.settings;
-        }
-    });
+            if (data.groups === undefined || data.groups === null) {
+                return;
+            }
+            config.groups = Array.from(data.groups);
+        });
+
+        await chrome.storage.local.get("settings", function (data) {
+
+            if (data.settings === undefined || data.settings === null) {
+                config.settings = [];
+            }
+            else {
+                config.settings = data.settings;
+            }
+        });
+    }
+    await getConfig();
 
     const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
     const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
@@ -83,8 +94,43 @@
         }
     }
 
+    function filteringChannelByGroup(accounts) {
+
+        const contents_query = document.querySelectorAll('div[id="contents"][class*="ytd-rich-grid-row"]');
+        const contents = Array.from(contents_query);
+
+        const query = document.querySelectorAll('ytd-rich-item-renderer');
+        const elements = Array.from(query);
+
+        elements.forEach((element) => {
+
+            const channel_name = element.querySelector('ytd-channel-name a[href]') ?? null;
+
+            if (channel_name !== null) {
+                const account = channel_name.getAttribute("href");
+                const found = accounts.find((value) => value === account.substring(1)) ?? null;
+                if (found === null) {
+                    element.style.display = "none";
+                } else {
+                    element.style.display = "unset";
+
+                    // contents.forEach((content) => {
+                    //     const childNodes = Array.from(content.childNodes);
+                    //     const list = childNodes.filter((value) => value.style.display === "unset");
+                    //     if (list.length < 6) {
+                    //         content.appendChild(element);
+                    //         return;
+                    //     }
+                    // });
+                }
+            }
+        });
+
+    }
     // create channel group title element
-    function createGroupTitleElement(title, lineEndStyle, groupElement) {
+    function createGroupTitleElement(group, lineEndStyle, groupElement) {
+
+        const title = group.name;
 
         const group_title = document.createElement("div");
         group_title.classList.add("channel-group");
@@ -128,12 +174,13 @@
         group_title.addEventListener('click', (event) => {
             if (groupElement.style.display === "none") {
                 groupElement.style.display = "unset";
-                title_icon.setAttribute("src", downAllowUrl)
+                title_icon.setAttribute("src", downAllowUrl);
             }
             else {
                 groupElement.style.display = "none";
-                title_icon.setAttribute("src", rightAllowUrl)
+                title_icon.setAttribute("src", rightAllowUrl);
             }
+            //filteringChannelByGroup(group.accounts);
         });
 
         return group_title;
@@ -175,19 +222,25 @@
 
         let groups = [];
         config.settings.forEach((setting) => {
-            let value = groups.find((value) => value.name == setting.group.name) ?? null;
+            let value = groups.find((value) => value.name == setting.groupname) ?? null;
             if (value === null) {
-                groups.push({ name: setting.group.name, order: setting.group.order, accounts: [setting.account] })
+                const group = config.groups.find((value) => value.name === setting.groupname) ?? null;
+                if (group !== null) {
+                    groups.push({ name: setting.groupname, order: group.order, accounts: [setting.account] })
+                }
+                else {
+                    groups.push({ name: setting.groupname, order: 999, accounts: [setting.account] })
+                }
             } else {
                 value.accounts.push(setting.account);
             }
         });
         groups = groups.sort((a, b) => a.order - b.order);
 
-        groups.forEach((gorup) => {
-            if (gorup.name !== "") {
-                const [ytd_guide_entry_group_renderer, lineEndStyle] = createGroupElement(gorup.accounts, channels);
-                const group_title = createGroupTitleElement(gorup.name, lineEndStyle, ytd_guide_entry_group_renderer);
+        groups.forEach((group) => {
+            if (group.name !== "") {
+                const [ytd_guide_entry_group_renderer, lineEndStyle] = createGroupElement(group.accounts, channels);
+                const group_title = createGroupTitleElement(group, lineEndStyle, ytd_guide_entry_group_renderer);
 
                 ytd_guide_section_renderer.appendChild(group_title);
                 ytd_guide_section_renderer.appendChild(ytd_guide_entry_group_renderer);

@@ -29,3 +29,12 @@ textarea {
     position: relative;
     left: 20px
 }
+
+.button:hover {
+    opacity: 0.5;
+}
+
+.button:active {
+    position: relative;
+    top: 2px;
+}

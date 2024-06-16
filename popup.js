@@ -170,15 +170,7 @@
             groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
         }
 
-        const sortedGroup = groups.sort((a, b) => {
-            if (a.name === b.name) {
-                return a.order - b.order;
-            } else if (a.name < b.name) {
-                return -1;
-            }
-
-            return 1;
-        })
+        const sortedGroup = groups.sort((a, b) => a.order - b.order);
 
         sortedGroup.forEach((group) => {
             const groupRow = createGroupNameRow(group.name);
@@ -245,7 +237,7 @@
             if (setting === null) {
                 return { title: channel.title, account: channel.account, groupName: "", order: 0 };
             }
-            return { title: channel.title, account: channel.account, groupName: setting.group.name, order: setting.order };
+            return { title: channel.title, account: channel.account, groupName: setting.groupname, order: setting.order };
         }).sort((a, b) => {
             if (a.groupName === b.groupName) {
                 return a.order - b.order
@@ -405,12 +397,7 @@
                 const account = queryAccount.innerText;
                 const groupName = queryGroup.value;
 
-                const group = groups.find((value) => value.name === groupName) ?? null;
-                if (group !== null) {
-                    settings.push({ account: account, group: group, order: order });
-                } else {
-                    settings.push({ account: account, group: { name: groupName, order: 999 }, order: order });
-                }
+                settings.push({ account: account, groupname: groupName, order: order });
                 order++;
             }
         });
