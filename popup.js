@@ -231,7 +231,7 @@
 
         const groups = lastsave_groups;
 
-        // if exists in channels, get in settings and sort by group order
+        // if exists in channels, get in settings 
         const channelSettings = subscription_channels.map((channel) => {
             const setting = settings.find((value) => value.account == channel.account) ?? null;
             if (setting === null) {
@@ -242,7 +242,7 @@
                 return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: group.order }, order: setting.order };
             }
             else {
-                return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: 999 }, order: setting.order };
+                return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: 0 }, order: setting.order };
             }
         });
 
@@ -252,15 +252,15 @@
             if (channel === null) {
                 const group = groups.find((value) => value.name === setting.groupname) ?? null;
                 if (group !== null) {
-                    channelSettings.push({ title: setting.title, account: setting.account, group: { name: setting.groupname, order: group.order }, order: setting.order });
+                    channelSettings.push({ title: "", account: setting.account, group: { name: setting.groupname, order: group.order }, order: setting.order });
                 }
                 else {
-                    channelSettings.push({ title: setting.title, account: setting.account, group: { name: setting.groupname, order: 999 }, order: setting.order });
+                    channelSettings.push({ title: "", account: setting.account, group: { name: setting.groupname, order: 0 }, order: setting.order });
                 }
             }
         });
 
-        // set on grouping table and update group selector
+        // sort by group order and set on grouping table and update group selector
         channelSettings.sort((a, b) => {
             if (a.group.order === b.group.order) {
                 return a.order - b.order
@@ -559,6 +559,12 @@
         const statusbar = document.querySelector('#status-bar') ?? null;
 
         statusbar.textContent = message;
+
+        statusbar.style.visibility = "visible";
+
+        setTimeout(() => {
+            statusbar.style.visibility = "hidden";
+        }, 1000);
 
     }
 

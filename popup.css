@@ -2,6 +2,7 @@ body {
     background-color: #333333;
     min-width: 760px;
     overflow-x: scroll;
+    margin: 1px;
 }
 
 h1 {
@@ -14,7 +15,7 @@ h2 {
     font-size: 24pt;
     text-decoration: underline;
     color: #CCCCCC;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 10px;
     margin-left: 5px;
 }
@@ -91,7 +92,7 @@ option {
 .group-name-button-area {
     display: flex;
     position: relative;
-    left: 70px
+    left: 100px
 }
 
 .button:hover {
@@ -133,7 +134,7 @@ option {
 .grouping-button-area {
     display: flex;
     position: relative;
-    left: 600px
+    left: 610px
 }
 
 .grouping-table-scroll {
@@ -146,14 +147,13 @@ option {
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 #status-bar {
-    font-size: 14pt !important;
-    min-width: 750px;
+    visibility: hidden;
+    width: 770px;
     height: 24px;
     margin: 0px;
     border: solid;
     border-width: 1px;
     text-align: center;
-    color: #CCCCCC;
     background-color: #000066;
 }
 
@@ -174,7 +174,7 @@ option {
 }
 
 #header-channel-name {
-    min-width: 350px;
+    min-width: 330px;
 }
 
 #header-channel-account {
