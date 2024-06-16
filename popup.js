@@ -261,7 +261,7 @@
         });
 
         // set on grouping table and update group selector
-        channelSettings = channelSettings.sort((a, b) => {
+        channelSettings.sort((a, b) => {
             if (a.group.order === b.group.order) {
                 return a.order - b.order
             }
