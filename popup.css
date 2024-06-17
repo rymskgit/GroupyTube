@@ -1,31 +1,25 @@
 body {
-    background-color: #333333;
     min-width: 760px;
-    overflow-x: scroll;
     margin: 1px;
-}
-
-h1 {
-    font-size: 32pt;
-    text-decoration: underline;
-    color: #CCCCCC;
+    background-color: #333333;
+    overflow-x: scroll;
 }
 
 h2 {
     font-size: 24pt;
-    text-decoration: underline;
     color: #CCCCCC;
+    text-decoration: underline;
     margin-top: 20px;
-    margin-bottom: 10px;
     margin-left: 5px;
+    margin-bottom: 10px;
 }
 
 table {
+    margin: 0px;
+    margin-left: 10px;
     border: solid;
     border-width: 1px;
     border-collapse: collapse;
-    margin: 0px;
-    margin-left: 10px;
 }
 
 table tr:nth-child(odd) {
@@ -72,28 +66,38 @@ option {
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 .font-class {
-    font-family: 'Meiryo' !important;
-    font-size: 12pt !important;
+    font-family: 'Meiryo';
+    font-size: 12pt;
     font-style: normal;
     color: #CCCCCC;
 }
 
-.group-name-button-area {
+/******************************************************************************/
+
+.group-name-operation-area {
     display: flex;
     position: relative;
     left: 90px
 }
 
-.button:hover {
+.operation-buuton {
+    width: 32px;
+    height: 32px;
+    margin: 0px;
+    margin-left: 5px;
+    scale: 0.7;
+}
+
+.operation-buuton:hover {
     opacity: 0.7;
 }
 
-.button:active {
+.operation-buuton:active {
     position: relative;
     top: 2px;
 }
 
-.header {
+.table-header {
     font-weight: bold;
     text-align: center;
 }
@@ -114,24 +118,32 @@ option {
 }
 
 .remove-img {
+    width: 18px;
     margin: 2px;
     margin-top: 5px;
     margin-left: 10px;
-    width: 18px;
 }
 
-.grouping-button-area {
+/******************************************************************************/
+
+.grouping-operation-area {
     display: flex;
     position: relative;
     left: 600px
 }
 
 .grouping-table-scroll {
-    max-height: 480px;
     width: max-content;
+    max-height: 480px;
     overflow-y: scroll;
     overflow-x: auto;
 }
+
+.channel-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -145,6 +157,8 @@ option {
     text-align: center;
     background-color: #000066;
 }
+
+/******************************************************************************/
 
 #group-name-table {
     width: 270px;
@@ -182,37 +196,23 @@ option {
     width: 70px;
 }
 
-#reload-group-name,
-#add-group-name,
-#save-group-name,
-#export-group-name,
-#import-group-name,
-#reload-grouping,
-#save-grouping,
-#export-grouping,
-#import-grouping {
-    margin: 0px;
-    margin-left: 5px;
-    width: 32px;
-    height: 32px;
-    scale: 0.7;
-}
+/******************************************************************************/
 
 #subpopup-overlay {
     display: none;
+    width: 100%;
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0);
     z-index: 1000;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 #subpopup-overlay iframe {
-    position: absolute;
     width: 720px;
     height: 560px;
+    position: absolute;
     top: 30px;
     left: 30px;
 }

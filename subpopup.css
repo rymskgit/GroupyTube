@@ -3,8 +3,8 @@ body {
 }
 
 textarea {
-    font-family: 'Meiryo' !important;
-    font-size: 12pt !important;
+    font-family: 'Meiryo';
+    font-size: 12pt;
     width: 100%;
     height: 485px;
     border: solid;
@@ -14,27 +14,27 @@ textarea {
     ;
 }
 
-#copy-json,
-#import-json,
-#close-popup {
-    margin: 0px;
-    margin-left: 5px;
-    width: 32px;
-    height: 32px;
-    scale: 0.7;
-}
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-.button-area {
+.operation-area {
     display: flex;
     position: relative;
     left: 20px
 }
 
-.button:hover {
+.operation-button {
+    width: 32px;
+    height: 32px;
+    margin: 0px;
+    margin-left: 5px;
+    scale: 0.7;
+}
+
+.operation-button:hover {
     opacity: 0.5;
 }
 
-.button:active {
+.operation-button:active {
     position: relative;
     top: 2px;
 }

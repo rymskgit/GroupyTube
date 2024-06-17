@@ -23,6 +23,7 @@
 
         // channel title
         const channelTitle = document.createElement("td");
+        channelTitle.classList.add("channel-title");
         channelTitle.innerText = channel.title;
         channelRow.appendChild(channelTitle);
 

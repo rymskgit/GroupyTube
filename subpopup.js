@@ -38,16 +38,22 @@
                 if (frame === null) {
                     return;
                 }
-                const groups = JSON.parse(jsonText.value);
 
-                if (frame.dataType === "group-name") {
-                    chrome.runtime.sendMessage({ type: "import-group", data: groups });
-                }
-                else if (frame.dataType === "grouping") {
-                    chrome.runtime.sendMessage({ type: "import-grouping", data: groups });
-                }
+                try {
+                    const groups = JSON.parse(jsonText.value);
 
-                frame.style.display = 'none';
+                    if (frame.dataType === "group-name") {
+                        chrome.runtime.sendMessage({ type: "import-group", data: groups });
+                    }
+                    else if (frame.dataType === "grouping") {
+                        chrome.runtime.sendMessage({ type: "import-grouping", data: groups });
+                    }
+
+                    frame.style.display = 'none';
+                }
+                catch (e) {
+                    console.log("invalid json");
+                }
             });
         }
     }
