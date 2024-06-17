@@ -21,8 +21,6 @@ h2 {
 }
 
 table {
-    width: auto;
-    min-width: max-content;
     border: solid;
     border-width: 1px;
     border-collapse: collapse;
@@ -39,7 +37,6 @@ table tr:nth-child(even) {
 }
 
 td {
-    width: auto;
     border: solid;
     border-width: 1px;
 }
@@ -47,7 +44,6 @@ td {
 button {
     display: block;
     height: 32px;
-    width: auto;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -63,7 +59,6 @@ input[type="text"] {
 }
 
 input[type="checkbox"] {
-    min-width: 30px;
     height: 18px;
     border: 0px;
     background-color: #CCCCCC;
@@ -71,7 +66,6 @@ input[type="checkbox"] {
 
 select {
     min-width: 120px;
-    height: auto;
     border: 0px;
     background-color: transparent;
 }
@@ -92,7 +86,7 @@ option {
 .group-name-button-area {
     display: flex;
     position: relative;
-    left: 100px
+    left: 90px
 }
 
 .button:hover {
@@ -127,14 +121,14 @@ option {
 .remove-img {
     margin: 2px;
     margin-top: 5px;
-    margin-left: 5px;
+    margin-left: 10px;
     width: 18px;
 }
 
 .grouping-button-area {
     display: flex;
     position: relative;
-    left: 610px
+    left: 600px
 }
 
 .grouping-table-scroll {
@@ -158,35 +152,39 @@ option {
 }
 
 #group-name-table {
-    min-width: 250px;
+    width: 270px;
 }
 
 #header-group-name {
-    min-width: 120px;
+    width: 150px;
 }
 
 #header-group-order {
-    min-width: 80px;
+    width: 70px;
 }
 
 #header-group-remove {
-    min-width: 30px;
+    width: 50px;
+}
+
+#grouping-table {
+    width: 740px;
 }
 
 #header-channel-name {
-    min-width: 330px;
+    width: 350px;
 }
 
 #header-channel-account {
-    min-width: 180px;
+    width: 200px;
 }
 
 #header-channel-group {
-    min-width: 120px;
+    width: 120px;
 }
 
 #header-channel-order {
-    min-width: 80px;
+    width: 70px;
 }
 
 #reload-group-name,
