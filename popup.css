@@ -141,14 +141,12 @@ option {
 }
 
 .channel-title {
-    position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
 .channel-account {
-    position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
