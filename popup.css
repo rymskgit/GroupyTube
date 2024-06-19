@@ -77,7 +77,7 @@ option {
 .group-name-operation-area {
     display: flex;
     position: relative;
-    left: 90px
+    left: 150px
 }
 
 .operation-buuton {
@@ -107,6 +107,10 @@ option {
     width: max-content;
     overflow-y: auto;
     overflow-x: auto;
+}
+
+.group-name {
+    width: 200px;
 }
 
 .order-area {
@@ -169,19 +173,19 @@ option {
 
 
 #group-name-table {
-    width: 270px
+    width: 320px
 }
 
 #header-group-name {
-    width: 150px;
+    width: 205px;
 }
 
 #header-group-order {
-    width: 70px;
+    width: 75px;
 }
 
 #header-group-remove {
-    width: 50px;
+    width: 40px;
 }
 
 #grouping-table {
@@ -202,7 +206,7 @@ option {
 }
 
 #header-channel-order {
-    width: 70px;
+    width: 75px;
 }
 
 #header-channel-remove {

@@ -111,6 +111,7 @@
         // group name
         const groupArea = document.createElement("td");
         const groupNameText = document.createElement("input");
+        groupNameText.classList.add("group-name");
         groupNameText.setAttribute("type", "text");
         groupNameText.setAttribute("id", "group-name");
         groupNameText.setAttribute("placeholder", "groupname");
