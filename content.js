@@ -94,39 +94,6 @@
         }
     }
 
-    function filteringChannelByGroup(accounts) {
-
-        const contents_query = document.querySelectorAll('div[id="contents"][class*="ytd-rich-grid-row"]');
-        const contents = Array.from(contents_query);
-
-        const query = document.querySelectorAll('ytd-rich-item-renderer');
-        const elements = Array.from(query);
-
-        elements.forEach((element) => {
-
-            const channel_name = element.querySelector('ytd-channel-name a[href]') ?? null;
-
-            if (channel_name !== null) {
-                const account = channel_name.getAttribute("href");
-                const found = accounts.find((value) => value === account.substring(1)) ?? null;
-                if (found === null) {
-                    element.style.display = "none";
-                } else {
-                    element.style.display = "unset";
-
-                    // contents.forEach((content) => {
-                    //     const childNodes = Array.from(content.childNodes);
-                    //     const list = childNodes.filter((value) => value.style.display === "unset");
-                    //     if (list.length < 6) {
-                    //         content.appendChild(element);
-                    //         return;
-                    //     }
-                    // });
-                }
-            }
-        });
-
-    }
     // create channel group title element
     function createGroupTitleElement(group, lineEndStyle, groupElement) {
 
@@ -180,7 +147,6 @@
                 groupElement.style.display = "none";
                 title_icon.setAttribute("src", rightAllowUrl);
             }
-            //filteringChannelByGroup(group.accounts);
         });
 
         return group_title;

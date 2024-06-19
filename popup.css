@@ -1,5 +1,4 @@
 body {
-    min-width: 760px;
     margin: 1px;
     background-color: #333333;
     overflow-x: scroll;
@@ -20,6 +19,7 @@ table {
     border: solid;
     border-width: 1px;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 table tr:nth-child(odd) {
@@ -109,7 +109,7 @@ option {
     overflow-x: auto;
 }
 
-.order-col {
+.order-area {
     display: flex;
 }
 
@@ -119,9 +119,10 @@ option {
 
 .remove-img {
     width: 18px;
+    height: 18px;
     margin: 2px;
     margin-top: 5px;
-    margin-left: 10px;
+    margin-left: 8px;
 }
 
 /******************************************************************************/
@@ -140,10 +141,18 @@ option {
 }
 
 .channel-title {
+    position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
 }
 
+.channel-account {
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
@@ -160,8 +169,9 @@ option {
 
 /******************************************************************************/
 
+
 #group-name-table {
-    width: 270px;
+    width: 270px
 }
 
 #header-group-name {
@@ -180,8 +190,9 @@ option {
     width: 740px;
 }
 
+
 #header-channel-name {
-    width: 350px;
+    width: auto;
 }
 
 #header-channel-account {
@@ -194,6 +205,10 @@ option {
 
 #header-channel-order {
     width: 70px;
+}
+
+#header-channel-remove {
+    width: 40px;
 }
 
 /******************************************************************************/
@@ -210,9 +225,9 @@ option {
 }
 
 #subpopup-overlay iframe {
-    width: 720px;
-    height: 560px;
+    width: 740px;
+    height: 570px;
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 10px;
+    left: 20px;
 }

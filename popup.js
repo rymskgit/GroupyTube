@@ -25,13 +25,13 @@
         const channelTitle = document.createElement("td");
         channelTitle.classList.add("channel-title");
         channelTitle.innerText = channel.title;
-        channelRow.appendChild(channelTitle);
 
         // channel account
         const accountName = document.createElement("td");
+        accountName.classList.add("channel-account");
         accountName.setAttribute("id", "channel-account");
+
         accountName.innerText = channel.account;
-        channelRow.appendChild(accountName);
 
         // group selector
         const groupName = document.createElement("td");
@@ -40,11 +40,11 @@
         groupSelector.setAttribute("id", "group-select");
         groupSelector.classList.add("font-class");
         groupName.appendChild(groupSelector);
-        channelRow.appendChild(groupName);
+
 
         // order
         const orderArea = document.createElement("td");
-        orderArea.classList.add("order-col");
+        orderArea.classList.add("order-area");
         const orderUpBox = document.createElement("button");
         const orderDownBox = document.createElement("button");
         orderUpBox.classList.add("font-class");
@@ -79,7 +79,26 @@
         });
         orderArea.appendChild(orderUpBox);
         orderArea.appendChild(orderDownBox);
+
+
+        // remove
+        const removeArea = document.createElement("td");
+        const removeImg = document.createElement("img");
+        removeImg.classList.add("remove-img");
+        removeImg.rowElement = channelRow;
+        removeImg.setAttribute("src", trashUrl);
+        removeImg.setAttribute("title", "remove");
+        removeImg.addEventListener("click", (event) => {
+            onRemoveGroupingClick(removeImg);
+        });
+        removeArea.appendChild(removeImg);
+
+
+        channelRow.appendChild(channelTitle);
+        channelRow.appendChild(accountName);
+        channelRow.appendChild(groupName);
         channelRow.appendChild(orderArea);
+        channelRow.appendChild(removeArea);
 
         return channelRow;
     }
@@ -90,16 +109,16 @@
         const groupRow = document.createElement("tr");
 
         // group name
-        const groupCol = document.createElement("td");
+        const groupArea = document.createElement("td");
         const groupNameText = document.createElement("input");
         groupNameText.setAttribute("type", "text");
         groupNameText.setAttribute("id", "group-name");
         groupNameText.setAttribute("placeholder", "groupname");
         groupNameText.value = groupname;
-        groupCol.appendChild(groupNameText);
+        groupArea.appendChild(groupNameText);
 
         // remove
-        const removeCol = document.createElement("td");
+        const removeArea = document.createElement("td");
         const removeImg = document.createElement("img");
         removeImg.classList.add("remove-img");
         removeImg.rowElement = groupRow;
@@ -108,11 +127,11 @@
         removeImg.addEventListener("click", (event) => {
             onRemoveGroupNameClick(removeImg);
         });
-        removeCol.appendChild(removeImg);
+        removeArea.appendChild(removeImg);
 
         // order
-        const orderCol = document.createElement("td");
-        orderCol.classList.add("order-col");
+        const orderArea = document.createElement("td");
+        orderArea.classList.add("order-area");
         const orderUpBox = document.createElement("button");
         const orderDownBox = document.createElement("button");
         orderUpBox.classList.add("font-class");
@@ -146,14 +165,12 @@
 
             row.parentNode.insertBefore(row.nextSibling, row);
         });
-        orderCol.appendChild(orderUpBox);
-        orderCol.appendChild(orderDownBox);
+        orderArea.appendChild(orderUpBox);
+        orderArea.appendChild(orderDownBox);
 
-
-        //groupRow.appendChild(chkCol);
-        groupRow.appendChild(groupCol);
-        groupRow.appendChild(orderCol);
-        groupRow.appendChild(removeCol);
+        groupRow.appendChild(groupArea);
+        groupRow.appendChild(orderArea);
+        groupRow.appendChild(removeArea);
 
         return groupRow;
     }
@@ -400,6 +417,16 @@
         updateGroupingTable(lastsave_settings);
 
         updateStatusBar(`grouping reload completed.`)
+    }
+
+    // remove grouping
+    function onRemoveGroupingClick(element) {
+        const parent = element.rowElement.parentNode;
+        if (parent !== null) {
+            parent.removeChild(element.rowElement);
+        }
+
+        updateStatusBar(`grouping deleted.`)
     }
 
     // create json grouping

@@ -40,13 +40,13 @@
                 }
 
                 try {
-                    const groups = JSON.parse(jsonText.value);
+                    const data = JSON.parse(jsonText.value);
 
                     if (frame.dataType === "group-name") {
-                        chrome.runtime.sendMessage({ type: "import-group", data: groups });
+                        chrome.runtime.sendMessage({ type: "import-group", data: data });
                     }
                     else if (frame.dataType === "grouping") {
-                        chrome.runtime.sendMessage({ type: "import-grouping", data: groups });
+                        chrome.runtime.sendMessage({ type: "import-grouping", data: data });
                     }
 
                     frame.style.display = 'none';
