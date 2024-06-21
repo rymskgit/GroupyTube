@@ -60,11 +60,6 @@
                 return;
             }
 
-            const id = row.previousSibling.getAttribute("id");
-            if (id === "grouping-table-header") {
-                return;
-            }
-
             row.parentNode.insertBefore(row, row.previousSibling);
         });
 
@@ -149,11 +144,6 @@
                 return;
             }
 
-            const id = row.previousSibling.getAttribute("id");
-            if (id === "group-name-table-header") {
-                return;
-            }
-
             row.parentNode.insertBefore(row, row.previousSibling);
         });
 
@@ -184,8 +174,8 @@
             return;
         }
 
-        // once all remove
-        while (groupNameTbl.childNodes.length > 1) {
+        // onece all remove
+        while (groupNameTbl.childNodes.length > 0) {
             groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
         }
 
@@ -243,8 +233,8 @@
             return;
         }
 
-        // once all remove
-        while (channelGrpTbl.childNodes.length > 1) {
+        // onece all remove
+        while (channelGrpTbl.childNodes.length > 0) {
             channelGrpTbl.removeChild(channelGrpTbl.childNodes[channelGrpTbl.childNodes.length - 1]);
         }
 
@@ -327,7 +317,7 @@
         }
 
         const group = element.rowElement.querySelector('#group-name');
-        updateStatusBar(`group "${group.value}" deleted.`)
+        updateStatusBar(`complete for group ${group.value} delete.`)
     }
 
     // create json for group names
@@ -357,7 +347,7 @@
             lastsave_groups = groups;
             updateGroupSelectorAll(groups);
 
-            updateStatusBar(`group names save completed.`)
+            updateStatusBar(`complete for group names save.`)
         });
     }
 
@@ -417,7 +407,7 @@
 
         updateGroupingTable(lastsave_settings);
 
-        updateStatusBar(`grouping reload completed.`)
+        updateStatusBar(`complete for grouping reload.`)
     }
 
     // remove grouping
@@ -427,7 +417,7 @@
             parent.removeChild(element.rowElement);
         }
 
-        updateStatusBar(`grouping deleted.`)
+        updateStatusBar(`complete for  grouping delete.`)
     }
 
     // create json grouping
@@ -463,7 +453,7 @@
         chrome.storage.local.set({ settings: settings }, () => {
             lastsave_settings = settings;
 
-            updateStatusBar(`grouping save completed.`);
+            updateStatusBar(`complete for grouping save.`);
         });
     }
 
@@ -570,13 +560,13 @@
             const groups = Array.from(message.data);
             updateGroupNamesTable(groups);
             onSaveGroupNameClick();
-            updateStatusBar(`group names import completed.`);
+            updateStatusBar(`complete for group names import.`);
         }
         else if (message.type === "import-grouping") {
             const settings = Array.from(message.data);
             updateGroupingTable(settings);
             onSaveGroupingClick();
-            updateStatusBar(`grouping import completed.`);
+            updateStatusBar(`complete for grouping import.`);
         }
     });
 
@@ -593,7 +583,7 @@
 
         setTimeout(() => {
             statusbar.style.visibility = "hidden";
-        }, 1000);
+        }, 3000);
 
     }
 

@@ -3,17 +3,35 @@ body {
 }
 
 textarea {
-    font-family: 'Meiryo';
-    font-size: 12pt;
-    width: 720px;
+    width: 700px;
     height: 485px;
     border: solid;
     border-width: 1px;
     resize: none;
     background-color: #CCCCCC;
+    color: black !important;
+}
+
+#message {
+    visibility: hidden;
+    width: 700px;
+    height: auto;
+    margin-left: 3px;
+    border: solid;
+    border-width: 0px;
+    text-align: center;
+    background-color: transparent;
+    color: red;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.font-class {
+    font-family: 'Meiryo';
+    font-size: 12pt;
+    font-style: normal;
+    color: #CCCCCC;
+}
 
 .operation-area {
     display: flex;

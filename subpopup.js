@@ -1,5 +1,20 @@
 (function () {
 
+    // update message box
+    function updateMessage(message) {
+
+        const messageBox = document.querySelector('#message') ?? null;
+
+        messageBox.textContent = message;
+
+        messageBox.style.visibility = "visible";
+
+        setTimeout(() => {
+            messageBox.style.visibility = "hidden";
+        }, 3000);
+
+    }
+
     // main process
     function main() {
 
@@ -28,6 +43,24 @@
             });
         }
 
+        function validateData(data, dataType) {
+            if (frame.dataType === "group-name") {
+                const groups = Array.from(data);
+                groups.forEach((value) => {
+                    const name = value.name;
+                    const order = value.order;
+                })
+            }
+            else if (frame.dataType === "grouping") {
+                const settings = Array.from(data);
+                settings.forEach((value) => {
+                    const account = value.account;
+                    const groupname = value.groupname;
+                    const order = value.order;
+                })
+            }
+        }
+
         const importJsonBtn = document.querySelector('#import-json') ?? null;
         if (importJsonBtn !== null) {
             importJsonBtn.addEventListener('click', (event) => {
@@ -41,6 +74,7 @@
 
                 try {
                     const data = JSON.parse(jsonText.value);
+                    validateData(data, frame.dataType);
 
                     if (frame.dataType === "group-name") {
                         chrome.runtime.sendMessage({ type: "import-group", data: data });
@@ -52,7 +86,7 @@
                     frame.style.display = 'none';
                 }
                 catch (e) {
-                    console.log("invalid json");
+                    updateMessage("invalid json for import.")
                 }
             });
         }

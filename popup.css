@@ -161,12 +161,13 @@ option {
 #status-bar {
     visibility: hidden;
     width: 770px;
-    height: 24px;
+    height: auto;
     margin: 0px;
     border: solid;
-    border-width: 1px;
+    border-width: 0px;
     text-align: center;
-    background-color: #000066;
+    background-color: #CCCCCC;
+    color: black;
 }
 
 /******************************************************************************/
