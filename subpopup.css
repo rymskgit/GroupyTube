@@ -1,12 +1,15 @@
 body {
+    width: 700px;
+    height: 540px;
     background-color: #666666;
 }
 
 textarea {
-    width: 700px;
+    width: 710px;
     height: 485px;
     border: solid;
     border-width: 1px;
+    margin: 1px;
     resize: none;
     background-color: #CCCCCC;
     color: black !important;
