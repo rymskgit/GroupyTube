@@ -44,19 +44,25 @@
         }
 
         function validateData(data, dataType) {
-            if (frame.dataType === "group-name") {
+            if (dataType === "group-name") {
                 const groups = Array.from(data);
                 groups.forEach((value) => {
                     const name = value.name;
                     const order = value.order;
+                    if (name === undefined || order === undefined) {
+                        throw new Exception();
+                    }
                 })
             }
-            else if (frame.dataType === "grouping") {
+            else if (dataType === "grouping") {
                 const settings = Array.from(data);
                 settings.forEach((value) => {
                     const account = value.account;
                     const groupname = value.groupname;
                     const order = value.order;
+                    if (account === undefined || groupname === undefined || order === undefined) {
+                        throw new Exception();
+                    }
                 })
             }
         }
