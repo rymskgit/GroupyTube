@@ -1,4 +1,5 @@
 body {
+    min-height: 600px;
     margin: 1px;
     background-color: #333333;
     overflow-x: scroll;
