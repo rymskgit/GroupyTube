@@ -13,7 +13,7 @@ function updateMessage(message) {
 
 }
 
-//
+// validate json on json text element
 function validateData(data, dataType) {
     if (dataType === "group-name") {
         const groups = Array.from(data);

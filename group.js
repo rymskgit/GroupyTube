@@ -92,7 +92,7 @@ function onReloadGroupNameClick() {
     updateGroupNamesTable(lastsaveGroups);
 }
 
-// add group name for group name table button click
+// add group name for group name table
 function onAddGroupNameClick() {
 
     const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
@@ -115,7 +115,7 @@ function onRemoveGroupNameClick(element) {
     updateStatusBar(`complete for group ${group.value} delete.`)
 }
 
-// create json for group names
+// create json from group names table
 function createJsonGroupName() {
     const query = document.querySelectorAll('#group-name-table tbody #group-name') ?? null;
     const groupNameList = Array.from(query);
@@ -132,7 +132,7 @@ function createJsonGroupName() {
     return values;
 }
 
-// save group list button click event handler
+// save group names
 function onSaveGroupNameClick() {
 
     const groups = createJsonGroupName();

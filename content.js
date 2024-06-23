@@ -2,6 +2,10 @@
 
     const config = {};
 
+    const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
+    const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
+    const dotUrl = chrome.runtime.getURL("images/dot.png");
+
     const head = document.getElementsByTagName("head")[0];
     const style = document.createElement("style");
     style.setAttribute("type", "text/css");
@@ -38,15 +42,8 @@
             scale:0.7;
         }
     `;
-
     head.appendChild(style);
 
-    function escape(text) {
-        return text.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-    }
 
     // load groups from storage
     async function loadGroups() {
@@ -81,12 +78,6 @@
 
         await loadSettings();
     }
-
-    await loadConfig();
-
-    const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
-    const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
-    const dotUrl = chrome.runtime.getURL("images/dot.png");
 
     // update group status
     function updateGroupStatus(element) {
@@ -290,7 +281,9 @@
     }
 
     // main process
-    function main() {
+    async function main() {
+
+        await loadConfig();
 
         // show all channel
         expandChannelElement();
@@ -316,10 +309,13 @@
 
             const query = document.querySelectorAll('ytd-app div[id="content"] tp-yt-app-drawer div[id="contentContainer"] ytd-guide-renderer[id="guide-renderer"] ytd-guide-section-renderer:nth-child(2) div[class*="ytd-guide-section-renderer"] ytd-guide-entry-renderer') ?? null;
 
-            if (query.length > 0) {
-                clearInterval(interval);
-                main();
+            if (query.length === 0) {
+                return;
             }
+
+            clearInterval(interval);
+            main();
+
         }, 500);
     }
 

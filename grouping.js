@@ -71,7 +71,6 @@ function createChannelRow(channel) {
     });
     removeArea.appendChild(removeImg);
 
-
     channelRow.appendChild(channelTitle);
     channelRow.appendChild(accountName);
     channelRow.appendChild(groupName);
@@ -100,7 +99,7 @@ function updateGroupSelector(groupSelector, groups) {
         const option = new Option(group.name);
         groupSelector.appendChild(option);
 
-        /* current value restore */
+        // current value restore
         if (currentValue == option.value) {
             groupSelector.value = option.value;
         }
@@ -211,7 +210,7 @@ function onRemoveGroupingClick(element) {
     updateStatusBar(`complete for  grouping delete.`)
 }
 
-// create json grouping
+// create json from grouping table
 function createJsonGrouping() {
     const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
     const channels = Array.from(query)
@@ -235,7 +234,7 @@ function createJsonGrouping() {
     return settings;
 }
 
-// save grouping button click event handler
+// save grouping table
 function onSaveGroupingClick() {
 
     const settings = createJsonGrouping();
