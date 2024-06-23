@@ -48,26 +48,41 @@
             .replace(/"/g, '&quot;')
     }
 
-    async function getConfig() {
-        await chrome.storage.local.get("groups", function (data) {
+    // load groups from storage
+    async function loadGroups() {
 
-            if (data.groups === undefined || data.groups === null) {
-                return;
-            }
-            config.groups = Array.from(data.groups);
-        });
+        const data = await chrome.storage.local.get("groups");
 
-        await chrome.storage.local.get("settings", function (data) {
+        if (data.groups === undefined || data.groups === null) {
+            data.groups = [];
+            return;
+        }
 
-            if (data.settings === undefined || data.settings === null) {
-                config.settings = [];
-            }
-            else {
-                config.settings = data.settings;
-            }
-        });
+        config.groups = Array.from(data.groups);
+
     }
-    await getConfig();
+
+    // load setting for grouping from storage
+    async function loadSettings() {
+        const data = await chrome.storage.local.get("settings");
+
+        if (data.settings === undefined || data.settings === null) {
+            config.settings = [];
+            return;
+        }
+
+        config.settings = Array.from(data.settings);
+    }
+
+    // load config from storage
+    async function loadConfig() {
+
+        await loadGroups();
+
+        await loadSettings();
+    }
+
+    await loadConfig();
 
     const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
     const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
@@ -115,7 +130,7 @@
         group_title.append(title_icon);
         group_title.append(title_string);
 
-
+        // dot for new contents
         const dot_icon = document.createElement("img");
         dot_icon.setAttribute("src", dotUrl);
         dot_icon.setAttribute("id", "dot-icon");
@@ -186,6 +201,7 @@
             return;
         }
 
+        // make grouping settings per group
         let groups = [];
         config.settings.forEach((setting) => {
             let value = groups.find((value) => value.name == setting.groupname) ?? null;
@@ -270,7 +286,7 @@
         const items = channels.map((channel) => ({ title: channel.title, account: channel.account }));
 
         // save channel data
-        chrome.storage.local.set({ channels: items }, () => { });
+        chrome.storage.local.set({ channels: items });
     }
 
     // main process
