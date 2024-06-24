@@ -203,9 +203,14 @@ function createYtdGuideSection() {
 
 function saveSubscriptionChannelData(channels) {
 
-    const items = channels.map((channel) => ({ title: channel.title, account: channel.account }));
+    try {
+        const items = channels.map((channel) => ({ title: channel.title, account: channel.account }));
 
-    chrome.storage.local.set({ channels: items });
+        chrome.storage.local.set({ channels: items });
+    }
+    catch (error) {
+        console.log("subscription channel save failed");
+    }
 }
 
 function getSubscriptionChannels() {
@@ -262,25 +267,35 @@ async function loadSettings() {
 
 async function loadConfig() {
 
-    await loadGroups();
+    try {
+        await loadGroups();
 
-    await loadSettings();
+        await loadSettings();
+    }
+    catch (error) {
+        console.log("failed load config");
+    }
 }
 
 async function main() {
 
-    await loadConfig();
+    try {
+        await loadConfig();
 
-    // show all channel
-    expandChannelElement();
+        // show all channel
+        expandChannelElement();
 
-    const channels = getSubscriptionChannels();
+        const channels = getSubscriptionChannels();
 
-    saveSubscriptionChannelData(channels);
+        saveSubscriptionChannelData(channels);
 
-    const ytd_guide_section_renderer = createYtdGuideSection();
+        const ytd_guide_section_renderer = createYtdGuideSection();
 
-    createChannelGroupElement(ytd_guide_section_renderer, channels);
+        createChannelGroupElement(ytd_guide_section_renderer, channels);
+    }
+    catch (error) {
+        console.log("contents error : ", error);
+    }
 }
 
 window.onload = () => {

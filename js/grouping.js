@@ -7,11 +7,13 @@ function createChannelRow(channel) {
     // channel title
     const channelTitle = document.createElement("td");
     channelTitle.classList.add("channel-title");
+    channelTitle.classList.add("font-class");
     channelTitle.innerText = channel.title;
 
     // channel account
     const accountName = document.createElement("td");
     accountName.classList.add("channel-account");
+    accountName.classList.add("font-class");
     accountName.setAttribute("id", "channel-account");
 
     accountName.innerText = channel.account;
@@ -225,13 +227,19 @@ function createJsonGrouping() {
 
 function onSaveGroupingClick() {
 
-    const settings = createJsonGrouping();
+    try {
+        const settings = createJsonGrouping();
 
-    chrome.storage.local.set({ settings: settings }, () => {
-        lastsaveSettings = settings;
+        chrome.storage.local.set({ settings: settings }, () => {
+            lastsaveSettings = settings;
 
-        updateStatusBar(`complete for grouping save.`);
-    });
+            updateStatusBar(`complete for grouping save.`);
+        });
+    }
+    catch (error) {
+        updateStatusBar(`grouping save failed.`);
+        console.log("grouping save failed", error);
+    }
 }
 
 function onExportGroupingClick() {

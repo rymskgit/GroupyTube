@@ -7,6 +7,7 @@ function createGroupNameRow(groupname = "") {
     const groupArea = document.createElement("td");
     const groupNameText = document.createElement("input");
     groupNameText.classList.add("group-name");
+    groupNameText.classList.add("font-class");
     groupNameText.setAttribute("type", "text");
     groupNameText.setAttribute("id", "group-name");
     groupNameText.setAttribute("placeholder", "groupname");
@@ -132,14 +133,19 @@ function createJsonGroupName() {
 
 function onSaveGroupNameClick() {
 
-    const groups = createJsonGroupName();
+    try {
+        const groups = createJsonGroupName();
 
-    chrome.storage.local.set({ groups: groups }, () => {
-        lastsaveGroups = groups;
-        updateGroupSelectorAll(groups);
+        chrome.storage.local.set({ groups: groups }, () => {
+            lastsaveGroups = groups;
+            updateGroupSelectorAll(groups);
 
-        updateStatusBar(`complete for group names save.`)
-    });
+            updateStatusBar(`complete for group names save.`)
+        });
+    } catch (error) {
+        updateStatusBar(`group names save failed.`)
+        console.log("group names save failed", error);
+    }
 }
 
 function onExportGroupNameClick() {

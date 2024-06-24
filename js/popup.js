@@ -85,23 +85,33 @@ async function loadSettingsFromStorage() {
 // get config from storage
 async function loadConfig() {
 
-    await loadSubcriptionChannelsFromStorage();
+    try {
+        await loadSubcriptionChannelsFromStorage();
 
-    await loadGroupsFromStorage();
+        await loadGroupsFromStorage();
 
-    await loadSettingsFromStorage();
+        await loadSettingsFromStorage();
+    }
+    catch (error) {
+        console.log("failed load config");
+    }
 }
 
 // main process
 async function main() {
 
-    await loadConfig();
+    try {
+        await loadConfig();
 
-    applyGroupNames(lastsaveGroups);
+        applyGroupNames(lastsaveGroups);
 
-    updateGroupingTable(lastsaveSettings);
+        updateGroupingTable(lastsaveSettings);
 
-    setEventHanlder();
+        setEventHanlder();
+    }
+    catch (error) {
+        console.log("popup error : ", error);
+    }
 }
 
 window.onload = () => {

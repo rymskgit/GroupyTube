@@ -104,7 +104,7 @@ option {
 }
 
 .group-name-table-scroll {
-    max-height: 300px;
+    max-height: 240px;
     width: max-content;
     overflow-y: auto;
     overflow-x: auto;
