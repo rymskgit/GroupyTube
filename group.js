@@ -1,4 +1,4 @@
-// create groupname table row
+
 function createGroupNameRow(groupname = "") {
 
     const groupRow = document.createElement("tr");
@@ -66,8 +66,7 @@ function createGroupNameRow(groupname = "") {
     return groupRow;
 }
 
-// update group names table
-function updateGroupNamesTable(groups) {
+function applyGroupNames(groups) {
 
     const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
     if (groupNameTbl === null) {
@@ -87,12 +86,21 @@ function updateGroupNamesTable(groups) {
     });
 }
 
-// realod last save for group name
-function onReloadGroupNameClick() {
-    updateGroupNamesTable(lastsaveGroups);
+function onRemoveGroupNameClick(element) {
+
+    const parent = element.rowElement.parentNode;
+    if (parent !== null) {
+        parent.removeChild(element.rowElement);
+    }
+
+    const group = element.rowElement.querySelector('#group-name');
+    updateStatusBar(`complete for group ${group.value} delete.`)
 }
 
-// add group name for group name table
+function onReloadGroupNameClick() {
+    applyGroupNames(lastsaveGroups);
+}
+
 function onAddGroupNameClick() {
 
     const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
@@ -105,18 +113,8 @@ function onAddGroupNameClick() {
     groupNameTbl.appendChild(groupRow);
 }
 
-function onRemoveGroupNameClick(element) {
-    const parent = element.rowElement.parentNode;
-    if (parent !== null) {
-        parent.removeChild(element.rowElement);
-    }
-
-    const group = element.rowElement.querySelector('#group-name');
-    updateStatusBar(`complete for group ${group.value} delete.`)
-}
-
-// create json from group names table
 function createJsonGroupName() {
+
     const query = document.querySelectorAll('#group-name-table tbody #group-name') ?? null;
     const groupNameList = Array.from(query);
 
@@ -132,12 +130,10 @@ function createJsonGroupName() {
     return values;
 }
 
-// save group names
 function onSaveGroupNameClick() {
 
     const groups = createJsonGroupName();
 
-    // save to chrome storage for group names
     chrome.storage.local.set({ groups: groups }, () => {
         lastsaveGroups = groups;
         updateGroupSelectorAll(groups);
@@ -146,50 +142,28 @@ function onSaveGroupNameClick() {
     });
 }
 
-// export group names
 function onExportGroupNameClick() {
-
-    const frame = document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
 
     const values = createJsonGroupName();
 
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(values) });
 
-    frame.style.display = "unset";
+    ShowSubPopup();
 }
 
-// import group names
-async function onImportGroupNameClick() {
+function onImportGroupNameClick() {
 
-    const frame = document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
+    chrome.runtime.sendMessage({ type: "import", dataType: "group-name" });
 
-    const subDocument = getSubPopupDocument();
-
-    const jsonText = subDocument.querySelector('#jsonText') ?? null;
-    if (jsonText === null) {
-        return;
-    }
-
-    jsonText.value = "";
-    jsonText.dataType = "group-name";
-
-    frame.style.display = "unset";
+    ShowSubPopup();
 }
 
-// recieve message from subpopup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "import-group") {
         const groups = Array.from(message.data);
-        updateGroupNamesTable(groups);
+        applyGroupNames(groups);
         onSaveGroupNameClick();
         updateStatusBar(`complete for group names import.`);
     }
-
 });

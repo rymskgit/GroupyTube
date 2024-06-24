@@ -1,4 +1,4 @@
-// update message box
+
 function updateMessage(message) {
 
     const messageBox = document.querySelector('#message') ?? null;
@@ -13,7 +13,6 @@ function updateMessage(message) {
 
 }
 
-// validate json on json text element
 function validateData(data, dataType) {
     if (dataType === "group-name") {
         const groups = Array.from(data);
@@ -38,17 +37,11 @@ function validateData(data, dataType) {
     }
 }
 
-//
 function onCloseClick() {
 
-    const frame = window.parent.document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
-    frame.style.display = 'none';
+    CloseSubPopup();
 }
 
-//
 function onCopyClick() {
     const jsonText = document.querySelector('#jsonText') ?? null;
     if (jsonText === null) {
@@ -58,7 +51,6 @@ function onCopyClick() {
     navigator.clipboard.writeText(jsonText.value);
 }
 
-//
 function onImportClick() {
     const parentDocument = window.parent.document;
 
@@ -90,7 +82,6 @@ function onImportClick() {
     }
 }
 
-//
 function onExport(data) {
 
     const jsonText = document.querySelector('#jsonText') ?? null;
@@ -101,35 +92,46 @@ function onExport(data) {
     jsonText.value = data;
 }
 
-//
+function onImport(dataType) {
+
+    const jsonText = document.querySelector('#jsonText') ?? null;
+    if (jsonText === null) {
+        return;
+    }
+
+    jsonText.dataType = dataType;
+}
+
 function onMessage(message) {
+
     if (message.type === "export") {
         onExport(message.data);
     }
+    else if (message.type === "import") {
+        onImport(message.dataType);
+    }
 }
 
-//
 function setEventHandler() {
 
     const closeBtn = document.querySelector('#close-popup') ?? null;
     if (closeBtn !== null) {
-        closeBtn.addEventListener('click', (event) => onCloseClick());
+        closeBtn.addEventListener("click", (event) => onCloseClick());
     }
 
     const copyJsonBtn = document.querySelector('#copy-json') ?? null;
     if (copyJsonBtn !== null) {
-        copyJsonBtn.addEventListener('click', (event) => onCopyClick());
+        copyJsonBtn.addEventListener("click", (event) => onCopyClick());
     }
 
     const importJsonBtn = document.querySelector('#import-json') ?? null;
     if (importJsonBtn !== null) {
-        importJsonBtn.addEventListener('click', (event) => onImportClick());
+        importJsonBtn.addEventListener("click", (event) => onImportClick());
     }
 
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));
 }
 
-// main process
 function main() {
     setEventHandler();
 }

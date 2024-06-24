@@ -1,8 +1,8 @@
 {
-  "name": "Youtube Subscription Channel Grouping",
+  "name": "GroupyTube",
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "Youtube subscription channel goruping",
+  "description": "Youtube subscription channel grouping",
   "content_scripts": [
     {
       "matches": [

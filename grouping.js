@@ -1,4 +1,4 @@
-// create grouping table row
+
 function createChannelRow(channel) {
 
     const channelRow = document.createElement("tr");
@@ -24,7 +24,6 @@ function createChannelRow(channel) {
     groupSelector.classList.add("font-class");
     groupName.appendChild(groupSelector);
 
-
     // order
     const orderArea = document.createElement("td");
     orderArea.classList.add("order-area");
@@ -36,6 +35,7 @@ function createChannelRow(channel) {
     orderDownBox.classList.add("order-button");
     orderUpBox.textContent = "▲";
     orderDownBox.textContent = "▼";
+
     orderUpBox.addEventListener("click", (event) => {
         const row = event.target.parentNode.parentNode;
 
@@ -58,7 +58,6 @@ function createChannelRow(channel) {
     orderArea.appendChild(orderUpBox);
     orderArea.appendChild(orderDownBox);
 
-
     // remove
     const removeArea = document.createElement("td");
     const removeImg = document.createElement("img");
@@ -80,7 +79,6 @@ function createChannelRow(channel) {
     return channelRow;
 }
 
-// update group selector on channel table
 function updateGroupSelector(groupSelector, groups) {
 
     const currentValue = groupSelector.value;
@@ -90,35 +88,29 @@ function updateGroupSelector(groupSelector, groups) {
         groupSelector.options[groupSelector.options.length - 1].remove();
     }
 
-    // create empty option
     const empty = new Option("");
     groupSelector.appendChild(empty);
 
-    // create option elements for group
     groups.forEach((group) => {
         const option = new Option(group.name);
         groupSelector.appendChild(option);
 
-        // current value restore
         if (currentValue == option.value) {
             groupSelector.value = option.value;
         }
     });
 }
 
-// update all group selector on grouping table
 function updateGroupSelectorAll(groups) {
 
     const query = document.querySelectorAll('#grouping-table tbody #group-select') ?? null;
     const groupSelectors = Array.from(query);
 
-    // update group selectors on channel table 
     groupSelectors.forEach((selector) => {
         updateGroupSelector(selector, groups)
     });
 }
 
-// update grouping table
 function updateGroupingTable(settings = null) {
 
     const channelGrpTbl = document.querySelector('#grouping-table tbody') ?? null;
@@ -192,15 +184,6 @@ function updateGroupingTable(settings = null) {
     });
 }
 
-// reload last save for grouping
-function onReloadGroupingClick() {
-
-    updateGroupingTable(lastsaveSettings);
-
-    updateStatusBar(`complete for grouping reload.`)
-}
-
-// remove grouping
 function onRemoveGroupingClick(element) {
     const parent = element.rowElement.parentNode;
     if (parent !== null) {
@@ -210,7 +193,13 @@ function onRemoveGroupingClick(element) {
     updateStatusBar(`complete for  grouping delete.`)
 }
 
-// create json from grouping table
+function onReloadGroupingClick() {
+
+    updateGroupingTable(lastsaveSettings);
+
+    updateStatusBar(`complete for grouping reload.`)
+}
+
 function createJsonGrouping() {
     const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
     const channels = Array.from(query)
@@ -234,12 +223,10 @@ function createJsonGrouping() {
     return settings;
 }
 
-// save grouping table
 function onSaveGroupingClick() {
 
     const settings = createJsonGrouping();
 
-    // save to chrome storage for grouping
     chrome.storage.local.set({ settings: settings }, () => {
         lastsaveSettings = settings;
 
@@ -247,43 +234,22 @@ function onSaveGroupingClick() {
     });
 }
 
-// export grouping
 function onExportGroupingClick() {
-
-    const frame = document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
 
     const settings = createJsonGrouping();
 
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(settings) });
 
-    frame.style.display = "unset";
+    ShowSubPopup();
 }
 
-// import grouping
 function onImportGroupingClick() {
 
-    const frame = document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
+    chrome.runtime.sendMessage({ type: "import", dataType: "grouping" });
 
-    const subDocument = getSubPopupDocument();
-
-    const jsonText = subDocument.querySelector('#jsonText') ?? null;
-    if (jsonText === null) {
-        return;
-    }
-
-    jsonText.value = "";
-    jsonText.dataType = "grouping";
-
-    frame.style.display = "unset";
+    ShowSubPopup();
 }
 
-// recieve message from subpopup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "import-grouping") {
@@ -292,5 +258,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         onSaveGroupingClick();
         updateStatusBar(`complete for grouping import.`);
     }
-
 });
