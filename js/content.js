@@ -157,7 +157,7 @@ function makeGroupingPerGroup() {
     // make grouping settings per group
     let groups = [];
     config.settings.forEach((setting) => {
-        let value = groups.find((value) => value.name == setting.groupname) ?? null;
+        const value = groups.find((value) => value.name == setting.groupname) ?? null;
         if (value === null) {
             const group = config.groups.find((value) => value.name === setting.groupname) ?? null;
             if (group !== null) {

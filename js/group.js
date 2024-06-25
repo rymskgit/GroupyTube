@@ -16,50 +16,10 @@ function createGroupNameRow(groupname = "") {
     groupArea.appendChild(groupNameText);
 
     // remove
-    const removeArea = document.createElement("td");
-    const removeImg = document.createElement("img");
-    removeImg.classList.add("remove-img");
-    removeImg.rowElement = groupRow;
-    removeImg.setAttribute("src", trashUrl);
-    removeImg.setAttribute("title", "remove group");
-    removeImg.addEventListener("click", (event) => {
-        onRemoveGroupNameClick(removeImg);
-    });
-    removeArea.appendChild(removeImg);
+    const removeArea = createRemoveElement(onRemoveGroupNameClick);
 
     // order
-    const orderArea = document.createElement("td");
-    orderArea.classList.add("order-area");
-    const orderUpBox = document.createElement("button");
-    const orderDownBox = document.createElement("button");
-    orderUpBox.classList.add("font-class");
-    orderUpBox.classList.add("order-button");
-    orderDownBox.classList.add("font-class");
-    orderDownBox.classList.add("order-button");
-    orderUpBox.textContent = "▲";
-    orderDownBox.textContent = "▼";
-
-    orderUpBox.addEventListener("click", (event) => {
-        const row = event.target.parentNode.parentNode;
-
-        if (row.previousSibling == null || row.previousSibling.nodeName.toLowerCase() !== "tr") {
-            return;
-        }
-
-        row.parentNode.insertBefore(row, row.previousSibling);
-    });
-
-    orderDownBox.addEventListener("click", (event) => {
-        const row = event.target.parentNode.parentNode;
-
-        if (row.nextSibling == null || row.nextSibling.nodeName.toLowerCase() !== "tr") {
-            return;
-        }
-
-        row.parentNode.insertBefore(row.nextSibling, row);
-    });
-    orderArea.appendChild(orderUpBox);
-    orderArea.appendChild(orderDownBox);
+    const orderArea = createOrderUpDownElement();
 
     groupRow.appendChild(groupArea);
     groupRow.appendChild(orderArea);
@@ -88,15 +48,13 @@ function applyGroupNames(groups) {
     });
 }
 
-function onRemoveGroupNameClick(element) {
+function onRemoveGroupNameClick(event) {
 
-    const parent = element.rowElement.parentNode;
-    if (parent !== null) {
-        parent.removeChild(element.rowElement);
-    }
+    const rowElement = event.target.parentNode.parentNode;
+    RemoveTableRow(rowElement);
 
-    const group = element.rowElement.querySelector('#group-name');
-    updateStatusBar(`complete for group ${group.value} delete.`)
+    const group = rowElement.querySelector('#group-name') ?? null;
+    updateStatusBar(`complete for group ${group?.value} delete.`);
 }
 
 function onReloadGroupNameClick() {

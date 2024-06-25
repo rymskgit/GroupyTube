@@ -15,63 +15,22 @@ function createChannelRow(channel) {
     accountName.classList.add("font-class");
     accountName.classList.add("channel-account");
     accountName.setAttribute("id", "channel-account");
-
     accountName.innerText = channel.account;
 
     // group selector
     const groupName = document.createElement("td");
     const groupSelector = document.createElement("select");
     groupSelector.account = channel.account;
-    groupSelector.setAttribute("id", "group-select");
     groupSelector.classList.add("font-class");
     groupSelector.classList.add("group");
+    groupSelector.setAttribute("id", "group-select");
     groupName.appendChild(groupSelector);
 
     // order
-    const orderArea = document.createElement("td");
-    orderArea.classList.add("order-area");
-    const orderUpBox = document.createElement("button");
-    const orderDownBox = document.createElement("button");
-    orderUpBox.classList.add("font-class");
-    orderUpBox.classList.add("order-button");
-    orderDownBox.classList.add("font-class");
-    orderDownBox.classList.add("order-button");
-    orderUpBox.textContent = "▲";
-    orderDownBox.textContent = "▼";
-
-    orderUpBox.addEventListener("click", (event) => {
-        const row = event.target.parentNode.parentNode;
-
-        if (row.previousSibling == null || row.previousSibling.nodeName.toLowerCase() !== "tr") {
-            return;
-        }
-
-        row.parentNode.insertBefore(row, row.previousSibling);
-    });
-
-    orderDownBox.addEventListener("click", (event) => {
-        const row = event.target.parentNode.parentNode;
-
-        if (row.nextSibling == null || row.nextSibling.nodeName.toLowerCase() !== "tr") {
-            return;
-        }
-
-        row.parentNode.insertBefore(row.nextSibling, row);
-    });
-    orderArea.appendChild(orderUpBox);
-    orderArea.appendChild(orderDownBox);
+    const orderArea = createOrderUpDownElement();
 
     // remove
-    const removeArea = document.createElement("td");
-    const removeImg = document.createElement("img");
-    removeImg.classList.add("remove-img");
-    removeImg.rowElement = channelRow;
-    removeImg.setAttribute("src", trashUrl);
-    removeImg.setAttribute("title", "remove");
-    removeImg.addEventListener("click", (event) => {
-        onRemoveGroupingClick(removeImg);
-    });
-    removeArea.appendChild(removeImg);
+    const removeArea = createRemoveElement(onRemoveGroupingClick);
 
     channelRow.appendChild(channelTitle);
     channelRow.appendChild(accountName);
@@ -195,19 +154,15 @@ function updateGroupingTable(settings = null) {
     });
 }
 
-function onRemoveGroupingClick(element) {
-    const parent = element.rowElement.parentNode;
-    if (parent !== null) {
-        parent.removeChild(element.rowElement);
-    }
+function onRemoveGroupingClick(event) {
 
+    RemoveTableRow(event.target.parentNode.parentNode);
     updateStatusBar(`complete for  grouping delete.`)
 }
 
 function onReloadGroupingClick() {
 
     updateGroupingTable(lastsaveSettings);
-
     updateStatusBar(`complete for grouping reload.`)
 }
 
@@ -241,7 +196,6 @@ function onSaveGroupingClick() {
 
         chrome.storage.local.set({ settings: settings }, () => {
             lastsaveSettings = settings;
-
             updateStatusBar(`complete for grouping save.`);
         });
     }
