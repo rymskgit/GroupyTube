@@ -129,7 +129,7 @@ function mergeSettings(settings) {
 
         // case where in settings and subscriotion
         if (channel !== null) {
-            channelSettings.push({ title: channel.title, account: channel.account, group: { name: setting.groupname, order: order }, order: setting.order });
+            channelSettings.push({ title: channel.title, account: setting.account, group: { name: setting.groupname, order: order }, order: setting.order });
         }
         // case where only in settings
         else if (channel === null) {

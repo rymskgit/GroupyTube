@@ -1,5 +1,4 @@
 
-
 function createGroupNameRow(groupname = "") {
 
     const groupRow = document.createElement("tr");
