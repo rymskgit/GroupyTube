@@ -99,6 +99,7 @@ function onImport(dataType) {
         return;
     }
 
+    jsonText.value = "";
     jsonText.dataType = dataType;
 }
 

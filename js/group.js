@@ -1,4 +1,5 @@
 
+
 function createGroupNameRow(groupname = "") {
 
     const groupRow = document.createElement("tr");
@@ -11,6 +12,7 @@ function createGroupNameRow(groupname = "") {
     groupNameText.setAttribute("type", "text");
     groupNameText.setAttribute("id", "group-name");
     groupNameText.setAttribute("placeholder", "groupname");
+    groupNameText.setAttribute("maxlength", "16");
     groupNameText.value = groupname;
     groupArea.appendChild(groupNameText);
 

@@ -6,14 +6,14 @@ function createChannelRow(channel) {
 
     // channel title
     const channelTitle = document.createElement("td");
-    channelTitle.classList.add("channel-title");
     channelTitle.classList.add("font-class");
+    channelTitle.classList.add("channel-title");
     channelTitle.innerText = channel.title;
 
     // channel account
     const accountName = document.createElement("td");
-    accountName.classList.add("channel-account");
     accountName.classList.add("font-class");
+    accountName.classList.add("channel-account");
     accountName.setAttribute("id", "channel-account");
 
     accountName.innerText = channel.account;
@@ -24,6 +24,7 @@ function createChannelRow(channel) {
     groupSelector.account = channel.account;
     groupSelector.setAttribute("id", "group-select");
     groupSelector.classList.add("font-class");
+    groupSelector.classList.add("group");
     groupName.appendChild(groupSelector);
 
     // order
@@ -113,6 +114,50 @@ function updateGroupSelectorAll(groups) {
     });
 }
 
+function mergeSettings(settings) {
+
+    const groups = lastsaveGroups;
+
+    let channelSettings = [];
+    settings.forEach((setting) => {
+        const channel = subscriptionChannels.find((channel) => channel.account === setting.account) ?? null;
+        const group = groups.find((value) => value.name === setting.groupname) ?? null;
+        let order = 0;
+        if (group !== null) {
+            order = group.order;
+        }
+
+        // case where in settings and subscriotion
+        if (channel !== null) {
+            channelSettings.push({ title: channel.title, account: channel.account, group: { name: setting.groupname, order: order }, order: setting.order });
+        }
+        // case where only in settings
+        else if (channel === null) {
+            channelSettings.push({ title: "", account: setting.account, group: { name: setting.groupname, order: order }, order: setting.order });
+        }
+    });
+
+    subscriptionChannels.forEach((channel) => {
+        const setting = settings.find((value) => value.account == channel.account) ?? null;
+        // case where only in subscriotion
+        if (setting === null) {
+            channelSettings.push({ title: channel.title, account: channel.account, group: { name: "", order: 0 }, order: 0 });
+        }
+    });
+
+    channelSettings = channelSettings.sort((a, b) => {
+        if (a.group.order === b.group.order) {
+            return a.order - b.order
+        }
+        else if (a.group.order < b.group.order) {
+            return -1;
+        }
+        return 1;
+    });
+
+    return channelSettings;
+}
+
 function updateGroupingTable(settings = null) {
 
     const channelGrpTbl = document.querySelector('#grouping-table tbody') ?? null;
@@ -135,46 +180,10 @@ function updateGroupingTable(settings = null) {
     }
 
     const groups = lastsaveGroups;
-
-    // if exists in channels, get in settings 
-    const channelSettings = subscriptionChannels.map((channel) => {
-        const setting = settings.find((value) => value.account == channel.account) ?? null;
-        if (setting === null) {
-            return { title: channel.title, account: channel.account, group: { name: "", order: 0 }, order: 0 };
-        }
-        const group = groups.find((value) => value.name === setting.groupname) ?? null;
-        if (group !== null) {
-            return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: group.order }, order: setting.order };
-        }
-        else {
-            return { title: channel.title, account: channel.account, group: { name: setting.groupname, order: 0 }, order: setting.order };
-        }
-    });
-
-    // if exists in settings and not exists in subscription_channels, add in channelSettings
-    settings.forEach((setting) => {
-        const channel = subscriptionChannels.find((channel) => channel.account === setting.account) ?? null;
-        if (channel === null) {
-            const group = groups.find((value) => value.name === setting.groupname) ?? null;
-            if (group !== null) {
-                channelSettings.push({ title: "", account: setting.account, group: { name: setting.groupname, order: group.order }, order: setting.order });
-            }
-            else {
-                channelSettings.push({ title: "", account: setting.account, group: { name: setting.groupname, order: 0 }, order: setting.order });
-            }
-        }
-    });
+    const channelSettings = mergeSettings(settings);
 
     // sort by group order and set on grouping table and update group selector
-    channelSettings.sort((a, b) => {
-        if (a.group.order === b.group.order) {
-            return a.order - b.order
-        }
-        else if (a.group.order < b.group.order) {
-            return -1;
-        }
-        return 1;
-    }).forEach((value) => {
+    channelSettings.forEach((value) => {
         const channelRow = createChannelRow({ title: value.title, account: value.account });
         channelGrpTbl.appendChild(channelRow);
 

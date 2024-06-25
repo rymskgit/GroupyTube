@@ -148,7 +148,7 @@ function createGroupElement(groupAccounts, channels) {
     return [ytd_guide_entry_group_renderer, lineEndStyle];
 }
 
-function createChannelGroupElement(ytd_guide_section_renderer, channels) {
+function makeGroupingPerGroup() {
 
     if (config.settings === null) {
         return;
@@ -171,6 +171,13 @@ function createChannelGroupElement(ytd_guide_section_renderer, channels) {
         }
     });
     groups = groups.sort((a, b) => a.order - b.order);
+
+    return groups;
+}
+
+function createChannelGroupElement(ytd_guide_section_renderer, channels) {
+
+    const groups = makeGroupingPerGroup();
 
     groups.forEach((group) => {
         if (group.name !== "") {

@@ -54,7 +54,7 @@ input[type="text"] {
 }
 
 select {
-    min-width: 120px;
+    width: 120px;
     height: 32px;
     border: 0px;
     background-color: transparent;
@@ -152,6 +152,12 @@ option {
 }
 
 .channel-account {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.group {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
