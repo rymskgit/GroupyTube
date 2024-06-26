@@ -4,40 +4,6 @@ let subscriptionChannels = [];
 let lastsaveGroups = [];
 let lastsaveSettings = [];
 
-function getSubPopupDocument() {
-
-    const subpopup = document.querySelector("#subpopup") ?? null;
-    if (subpopup === null) {
-        return;
-    }
-
-    const subDocument = subpopup.contentWindow.document;
-
-    return subDocument;
-}
-
-function ShowSubPopup() {
-
-    const frame = document.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
-
-    frame.style.display = "unset";
-}
-
-function CloseSubPopup() {
-
-    const parentDocument = window.parent.document;
-
-    const frame = parentDocument.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
-
-    frame.style.display = "none";
-}
-
 function RemoveTableRow(rowElement) {
     const parent = rowElement.parentNode;
     if (parent !== null) {

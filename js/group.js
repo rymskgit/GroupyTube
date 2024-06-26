@@ -112,23 +112,26 @@ function onExportGroupNameClick() {
     const values = createJsonGroupName();
 
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(values) });
-
-    ShowSubPopup();
 }
 
 function onImportGroupNameClick() {
 
     chrome.runtime.sendMessage({ type: "import", dataType: "group-name" });
-
-    ShowSubPopup();
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+function importGroup(groups) {
+
+    applyGroupNames(groups);
+    onSaveGroupNameClick();
+    updateStatusBar(`complete for group names import.`);
+}
+
+function onMessage(message) {
 
     if (message.type === "import-group") {
         const groups = Array.from(message.data);
-        applyGroupNames(groups);
-        onSaveGroupNameClick();
-        updateStatusBar(`complete for group names import.`);
+        importGroup(groups);
     }
-});
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));

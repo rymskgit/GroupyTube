@@ -1,3 +1,26 @@
+function Show() {
+
+    const parentDocument = window.parent.document;
+
+    const frame = parentDocument.querySelector('#subpopup-overlay') ?? null;
+    if (frame === null) {
+        return;
+    }
+
+    frame.style.display = "unset";
+}
+
+function Close() {
+
+    const parentDocument = window.parent.document;
+
+    const frame = parentDocument.querySelector('#subpopup-overlay') ?? null;
+    if (frame === null) {
+        return;
+    }
+
+    frame.style.display = "none";
+}
 
 function updateMessage(message) {
 
@@ -39,7 +62,7 @@ function validateData(data, dataType) {
 
 function onCloseClick() {
 
-    CloseSubPopup();
+    Close();
 }
 
 function onCopyClick() {
@@ -90,6 +113,8 @@ function onExport(data) {
     }
 
     jsonText.value = data;
+
+    Show();
 }
 
 function onImport(dataType) {
@@ -101,6 +126,8 @@ function onImport(dataType) {
 
     jsonText.value = "";
     jsonText.dataType = dataType;
+
+    Show();
 }
 
 function onMessage(message) {

@@ -210,23 +210,26 @@ function onExportGroupingClick() {
     const settings = createJsonGrouping();
 
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(settings) });
-
-    ShowSubPopup();
 }
 
 function onImportGroupingClick() {
 
     chrome.runtime.sendMessage({ type: "import", dataType: "grouping" });
-
-    ShowSubPopup();
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+function importGrouping(settings) {
+
+    updateGroupingTable(settings);
+    onSaveGroupingClick();
+    updateStatusBar(`complete for grouping import.`);
+}
+
+function onMessage(message) {
 
     if (message.type === "import-grouping") {
         const settings = Array.from(message.data);
-        updateGroupingTable(settings);
-        onSaveGroupingClick();
-        updateStatusBar(`complete for grouping import.`);
+        importGrouping(settings);
     }
-});
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));
