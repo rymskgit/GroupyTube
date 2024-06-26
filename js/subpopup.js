@@ -75,12 +75,6 @@ function onCopyClick() {
 }
 
 function onImportClick() {
-    const parentDocument = window.parent.document;
-
-    const frame = parentDocument.querySelector('#subpopup-overlay') ?? null;
-    if (frame === null) {
-        return;
-    }
 
     const jsonText = document.querySelector('#jsonText') ?? null;
     if (jsonText === null) {
@@ -98,7 +92,7 @@ function onImportClick() {
             chrome.runtime.sendMessage({ type: "import-grouping", data: data });
         }
 
-        frame.style.display = 'none';
+        Close();
     }
     catch (e) {
         updateMessage("invalid json for import.");
@@ -130,7 +124,7 @@ function onImport(dataType) {
     Show();
 }
 
-function onMessage(message) {
+function onMessageSubpopup(message) {
 
     if (message.type === "export") {
         onExport(message.data);
@@ -157,7 +151,7 @@ function setEventHandler() {
         importJsonBtn.addEventListener("click", (event) => onImportClick());
     }
 
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageSubpopup(message));
 }
 
 function main() {

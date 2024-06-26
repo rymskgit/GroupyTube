@@ -224,7 +224,7 @@ function importGrouping(settings) {
     updateStatusBar(`complete for grouping import.`);
 }
 
-function onMessage(message) {
+function onMessageGrouping(message) {
 
     if (message.type === "import-grouping") {
         const settings = Array.from(message.data);
@@ -232,4 +232,4 @@ function onMessage(message) {
     }
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageGrouping(message));

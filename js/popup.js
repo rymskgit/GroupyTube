@@ -46,7 +46,6 @@ function setEventHanlder() {
     }
 }
 
-// load subcscription channel from storage
 async function loadSubcriptionChannelsFromStorage() {
 
     const data = await chrome.storage.local.get("channels");
@@ -58,7 +57,6 @@ async function loadSubcriptionChannelsFromStorage() {
     subscriptionChannels = Array.from(data.channels);
 }
 
-// load group name from storage
 async function loadGroupsFromStorage() {
 
     const data = await chrome.storage.local.get("groups");
@@ -70,7 +68,6 @@ async function loadGroupsFromStorage() {
     lastsaveGroups = Array.from(data.groups);
 }
 
-// load setting for grouping from storage
 async function loadSettingsFromStorage() {
 
     const data = await chrome.storage.local.get("settings");
@@ -82,7 +79,6 @@ async function loadSettingsFromStorage() {
     lastsaveSettings = Array.from(data.settings);
 }
 
-// get config from storage
 async function loadConfig() {
 
     try {
@@ -97,7 +93,6 @@ async function loadConfig() {
     }
 }
 
-// main process
 async function main() {
 
     try {

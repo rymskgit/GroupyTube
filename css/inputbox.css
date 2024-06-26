@@ -1,0 +1,56 @@
+body {
+    width: 350px;
+    height: 80px;
+    background-color: #666666;
+}
+
+input[type="text"] {
+    height: 32px;
+    border: 0px;
+    background-color: #CCCCCC;
+    color: #333333;
+}
+
+button {
+    width: 100px;
+    height: 32px;
+    border: solid;
+    border-width: 1px;
+    margin: 0px;
+    background-color: #CCCCCC;
+    color: #333333;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.font-class {
+    font-family: 'Meiryo';
+    font-size: 12pt;
+    font-style: normal;
+    color: #CCCCCC;
+}
+
+.input-area {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.operation-area {
+    display: flex;
+    position: relative;
+    left: 130px;
+    width: fit-content;
+}
+
+.operation-button {
+    margin-top: 30px;
+    margin-left: 5px;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+#input-lable {
+    margin: 0px;
+    margin-right: 5px;
+}

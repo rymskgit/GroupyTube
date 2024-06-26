@@ -5,14 +5,11 @@ function createGroupNameRow(groupname = "") {
 
     // group name
     const groupArea = document.createElement("td");
-    const groupNameText = document.createElement("input");
+    const groupNameText = document.createElement("span");
     groupNameText.classList.add("group-name");
     groupNameText.classList.add("font-class");
-    groupNameText.setAttribute("type", "text");
     groupNameText.setAttribute("id", "group-name");
-    groupNameText.setAttribute("placeholder", "groupname");
-    groupNameText.setAttribute("maxlength", "16");
-    groupNameText.value = groupname;
+    groupNameText.textContent = groupname;
     groupArea.appendChild(groupNameText);
 
     // remove
@@ -63,12 +60,21 @@ function onReloadGroupNameClick() {
 
 function onAddGroupNameClick() {
 
+    chrome.runtime.sendMessage({ type: "input-group-name" });
+}
+
+function onInputGroupName(groupname) {
+
+    if (groupname === "") {
+        return;
+    }
+
     const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
     if (groupNameTbl === null) {
         return
     }
 
-    const groupRow = createGroupNameRow();
+    const groupRow = createGroupNameRow(groupname);
 
     groupNameTbl.appendChild(groupRow);
 }
@@ -81,8 +87,8 @@ function createJsonGroupName() {
     const values = [];
     let order = 1;
     groupNameList.forEach((element) => {
-        if (element.value !== "") {
-            values.push({ name: element.value, order: order });
+        if (element.textContent !== "") {
+            values.push({ name: element.textContent, order: order });
             order++;
         }
     });
@@ -126,12 +132,15 @@ function importGroup(groups) {
     updateStatusBar(`complete for group names import.`);
 }
 
-function onMessage(message) {
+function onMessageGroup(message) {
 
     if (message.type === "import-group") {
         const groups = Array.from(message.data);
         importGroup(groups);
     }
+    else if (message.type === "input-ok" && message.dataType === "group-name") {
+        onInputGroupName(message.data)
+    }
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessage(message));
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageGroup(message));

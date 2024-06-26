@@ -38,6 +38,7 @@ textarea {
 
 .operation-area {
     display: flex;
+    width: fit-content;
     position: relative;
     left: 20px
 }
