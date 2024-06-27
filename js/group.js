@@ -6,21 +6,24 @@ function createGroupNameRow(groupname = "") {
 
     // group name
     const groupArea = document.createElement("td");
+    const groupName = document.createElement("div");
+    groupName.classList.add("group-name-area");
     const groupNameText = document.createElement("span");
     groupNameText.classList.add("group-name");
     groupNameText.classList.add("font-class");
     groupNameText.setAttribute("id", "group-name");
     groupNameText.textContent = groupname;
-    groupArea.appendChild(groupNameText);
+    groupName.appendChild(groupNameText);
 
     // edit
-    const editArea = document.createElement("td");
+    //const editArea = document.createElement("td");
     const editImg = document.createElement("img");
     editImg.classList.add("edit-img");
     editImg.setAttribute("src", editUrl);
     editImg.setAttribute("title", "edit");
     editImg.addEventListener("click", (event) => onEditGroupNameClick(event));
-    editArea.appendChild(editImg);
+    groupName.appendChild(editImg);
+    groupArea.appendChild(groupName);
 
     // order
     const orderArea = createOrderUpDownElement();
@@ -29,7 +32,6 @@ function createGroupNameRow(groupname = "") {
     const removeArea = createRemoveElement(onRemoveGroupNameClick);
 
     groupRow.appendChild(groupArea);
-    groupRow.appendChild(editArea);
     groupRow.appendChild(orderArea);
     groupRow.appendChild(removeArea);
 
@@ -92,6 +94,7 @@ function onRemoveGroupNameClick(event) {
 }
 
 function onReloadGroupNameClick() {
+
     applyGroupNames(lastsaveGroups);
 }
 

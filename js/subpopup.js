@@ -1,3 +1,4 @@
+
 function Show() {
 
     const parentDocument = window.parent.document;
@@ -25,18 +26,20 @@ function Close() {
 function updateMessage(message) {
 
     const messageBox = document.querySelector('#message') ?? null;
+    if (messageBox === null) {
+        return;
+    }
 
     messageBox.textContent = message;
-
     messageBox.style.visibility = "visible";
 
     setTimeout(() => {
         messageBox.style.visibility = "hidden";
     }, 3000);
-
 }
 
 function validateData(data, dataType) {
+
     if (dataType === "group-name") {
         const groups = Array.from(data);
         groups.forEach((value) => {
@@ -66,6 +69,7 @@ function onCloseClick() {
 }
 
 function onCopyClick() {
+
     const jsonText = document.querySelector('#jsonText') ?? null;
     if (jsonText === null) {
         return;
@@ -94,7 +98,7 @@ function onImportClick() {
 
         Close();
     }
-    catch (e) {
+    catch (error) {
         updateMessage("invalid json for import.");
     }
 }

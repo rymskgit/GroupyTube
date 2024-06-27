@@ -1,3 +1,4 @@
+
 const trashUrl = chrome.runtime.getURL("images/trash.png");
 const editUrl = chrome.runtime.getURL("images/edit.png");
 
@@ -6,6 +7,7 @@ let lastsaveGroups = [];
 let lastsaveSettings = [];
 
 function RemoveTableRow(rowElement) {
+
     const parent = rowElement.parentNode;
     if (parent !== null) {
         parent.removeChild(rowElement);
@@ -13,6 +15,7 @@ function RemoveTableRow(rowElement) {
 }
 
 function MoveUpTableRow(rowElement) {
+
     if (rowElement.previousSibling == null || rowElement.previousSibling.nodeName.toLowerCase() !== "tr") {
         return;
     }
@@ -21,6 +24,7 @@ function MoveUpTableRow(rowElement) {
 }
 
 function MoveDownTableRow(rowElement) {
+
     if (rowElement.nextSibling == null || rowElement.nextSibling.nodeName.toLowerCase() !== "tr") {
         return;
     }
@@ -67,13 +71,14 @@ function createRemoveElement(clickEventHandler) {
 function updateStatusBar(message) {
 
     const statusbar = document.querySelector('#status-bar') ?? null;
+    if (statusbar === null) {
+        return;
+    }
 
     statusbar.textContent = message;
-
     statusbar.style.visibility = "visible";
 
     setTimeout(() => {
         statusbar.style.visibility = "hidden";
     }, 3000);
-
 }

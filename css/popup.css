@@ -113,6 +113,10 @@ option {
     overflow-x: auto;
 }
 
+.group-name-area {
+    display: flex;
+}
+
 .group-name {
     width: 200px;
 }
@@ -211,7 +215,6 @@ option {
 
 #header-group-name {
     width: 190px;
-    column-span: 2;
 }
 
 #header-group-edit {

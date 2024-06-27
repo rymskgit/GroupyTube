@@ -49,6 +49,7 @@ function updateGroupItem(newValue, oldValue) {
     elements.forEach((element) => {
 
         const options = Array.from(element.options);
+
         options.forEach((option) => {
             if (option.textContent == oldValue) {
                 option.textContent = newValue;
@@ -187,6 +188,7 @@ function onReloadGroupingClick() {
 }
 
 function createJsonGrouping() {
+
     const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
     const channels = Array.from(query)
     const groups = lastsaveGroups;

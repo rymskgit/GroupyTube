@@ -1,3 +1,4 @@
+
 function Show() {
 
     const parentDocument = window.parent.document;
@@ -27,7 +28,6 @@ function onOkClick() {
     const element = document.querySelector('input[type="text"]') ?? null;
 
     if (element !== null) {
-
         if (element.edit === false) {
             chrome.runtime.sendMessage({ type: "input-ok", dataType: element.dataType, data: element.value });
         }
