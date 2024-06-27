@@ -1,4 +1,5 @@
 const trashUrl = chrome.runtime.getURL("images/trash.png");
+const editUrl = chrome.runtime.getURL("images/edit.png");
 
 let subscriptionChannels = [];
 let lastsaveGroups = [];

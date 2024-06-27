@@ -80,7 +80,7 @@ option {
     display: flex;
     width: fit-content;
     position: relative;
-    left: 150px
+    left: 170px
 }
 
 .operation-button {
@@ -89,6 +89,7 @@ option {
     margin: 0px;
     margin-left: 5px;
     scale: 0.7;
+    cursor: pointer;
 }
 
 .operation-button:hover {
@@ -125,11 +126,32 @@ option {
 }
 
 .remove-img {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     margin: 2px;
     margin-top: 5px;
     margin-left: 8px;
+    cursor: pointer;
+}
+
+.edit-img {
+    width: 24px;
+    height: 24px;
+    margin: 2px;
+    margin-top: 5px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.remove-img:hover,
+.edit-img:hover {
+    opacity: 0.7;
+}
+
+.remove-img:active,
+.edit-img:active {
+    position: relative;
+    top: 2px;
 }
 
 /******************************************************************************/
@@ -184,11 +206,16 @@ option {
 
 
 #group-name-table {
-    width: 320px
+    width: 300px
 }
 
 #header-group-name {
-    width: 205px;
+    width: 190px;
+    column-span: 2;
+}
+
+#header-group-edit {
+    width: 40px;
 }
 
 #header-group-order {

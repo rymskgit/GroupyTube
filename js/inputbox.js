@@ -27,7 +27,13 @@ function onOkClick() {
     const element = document.querySelector('input[type="text"]') ?? null;
 
     if (element !== null) {
-        chrome.runtime.sendMessage({ type: "input-ok", dataType: element.dataType, data: element.value });
+
+        if (element.edit === false) {
+            chrome.runtime.sendMessage({ type: "input-ok", dataType: element.dataType, data: element.value });
+        }
+        else if (element.edit === true) {
+            chrome.runtime.sendMessage({ type: "edit-ok", dataType: element.dataType, data: { newValue: element.value, oldValue: element.oldvalue } });
+        }
     }
 
     Close();
@@ -44,7 +50,7 @@ function onCancelClick() {
     Close();
 }
 
-function onInputGroupName() {
+function onInputGroupName(groupname = "", edit = false) {
 
     const inputLabel = document.querySelector('#input-lable') ?? null;
     if (inputLabel === null) {
@@ -56,16 +62,13 @@ function onInputGroupName() {
     if (element === null) {
         return;
     }
+
+    element.oldvalue = groupname;
+    element.value = groupname;
     element.dataType = "group-name";
+    element.edit = edit;
 
     Show();
-}
-
-function onMessageInputBox(message) {
-
-    if (message.type === "input-group-name") {
-        onInputGroupName();
-    }
 }
 
 function setEventHandler() {
@@ -79,9 +82,17 @@ function setEventHandler() {
     if (cancelBtn !== null) {
         cancelBtn.addEventListener("click", (event) => onCancelClick());
     }
-
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageInputBox(message));
 }
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.type === "input-group-name") {
+        onInputGroupName();
+    }
+    else if (message.type === "edit-group-name") {
+        onInputGroupName(message.data, true);
+    }
+});
 
 function main() {
     setEventHandler();

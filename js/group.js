@@ -2,6 +2,7 @@
 function createGroupNameRow(groupname = "") {
 
     const groupRow = document.createElement("tr");
+    groupRow.setAttribute("id", "group-name-row")
 
     // group name
     const groupArea = document.createElement("td");
@@ -12,13 +13,23 @@ function createGroupNameRow(groupname = "") {
     groupNameText.textContent = groupname;
     groupArea.appendChild(groupNameText);
 
-    // remove
-    const removeArea = createRemoveElement(onRemoveGroupNameClick);
+    // edit
+    const editArea = document.createElement("td");
+    const editImg = document.createElement("img");
+    editImg.classList.add("edit-img");
+    editImg.setAttribute("src", editUrl);
+    editImg.setAttribute("title", "edit");
+    editImg.addEventListener("click", (event) => onEditGroupNameClick(event));
+    editArea.appendChild(editImg);
 
     // order
     const orderArea = createOrderUpDownElement();
 
+    // remove
+    const removeArea = createRemoveElement(onRemoveGroupNameClick);
+
     groupRow.appendChild(groupArea);
+    groupRow.appendChild(editArea);
     groupRow.appendChild(orderArea);
     groupRow.appendChild(removeArea);
 
@@ -45,13 +56,39 @@ function applyGroupNames(groups) {
     });
 }
 
+function onEditGroupNameClick(event) {
+
+    const rowElement = event.target.parentNode.parentNode;
+
+    const group = rowElement.querySelector('#group-name') ?? null;
+    if (group === null) {
+        return;
+    }
+
+    chrome.runtime.sendMessage({ type: "edit-group-name", data: group.textContent });
+}
+
+function onEditGroupName(data) {
+
+    const query = document.querySelectorAll('#group-name-table tbody #group-name');
+    const elements = Array.from(query);
+
+    const value = elements.find((element) => element.textContent === data.oldValue);
+
+    if (value !== null) {
+        value.textContent = data.newValue;
+    }
+
+    updateGroupItem(data.newValue, data.oldValue);
+}
+
 function onRemoveGroupNameClick(event) {
 
     const rowElement = event.target.parentNode.parentNode;
     RemoveTableRow(rowElement);
 
     const group = rowElement.querySelector('#group-name') ?? null;
-    updateStatusBar(`complete for group ${group?.value} delete.`);
+    updateStatusBar(`complete for group ${group?.textContent} delete.`);
 }
 
 function onReloadGroupNameClick() {
@@ -63,9 +100,24 @@ function onAddGroupNameClick() {
     chrome.runtime.sendMessage({ type: "input-group-name" });
 }
 
+function validateGroupName(groupname) {
+
+    const query = documents.querySelectorAll('#group-name-table tbody #group-name');
+    const elements = Array.from(query);
+
+    const value = elements.find((element) => element.textContent === groupname);
+
+    return value === null;
+}
+
 function onInputGroupName(groupname) {
 
     if (groupname === "") {
+        return;
+    }
+
+    if (validateGroupName(groupname) === false) {
+        updateStatusBar("invalid group name.");
         return;
     }
 
@@ -82,11 +134,11 @@ function onInputGroupName(groupname) {
 function createJsonGroupName() {
 
     const query = document.querySelectorAll('#group-name-table tbody #group-name') ?? null;
-    const groupNameList = Array.from(query);
+    const elements = Array.from(query);
 
     const values = [];
     let order = 1;
-    groupNameList.forEach((element) => {
+    elements.forEach((element) => {
         if (element.textContent !== "") {
             values.push({ name: element.textContent, order: order });
             order++;
@@ -103,7 +155,7 @@ function onSaveGroupNameClick() {
 
         chrome.storage.local.set({ groups: groups }, () => {
             lastsaveGroups = groups;
-            updateGroupSelectorAll(groups);
+            applyGroupItemsAll(groups);
 
             updateStatusBar(`complete for group names save.`)
         });
@@ -116,7 +168,6 @@ function onSaveGroupNameClick() {
 function onExportGroupNameClick() {
 
     const values = createJsonGroupName();
-
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(values) });
 }
 
@@ -132,7 +183,7 @@ function importGroup(groups) {
     updateStatusBar(`complete for group names import.`);
 }
 
-function onMessageGroup(message) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "import-group") {
         const groups = Array.from(message.data);
@@ -141,6 +192,7 @@ function onMessageGroup(message) {
     else if (message.type === "input-ok" && message.dataType === "group-name") {
         onInputGroupName(message.data)
     }
-}
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageGroup(message));
+    else if (message.type === "edit-ok" && message.dataType === "group-name") {
+        onEditGroupName(message.data);
+    }
+});

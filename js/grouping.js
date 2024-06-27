@@ -41,7 +41,27 @@ function createChannelRow(channel) {
     return channelRow;
 }
 
-function updateGroupSelector(groupSelector, groups) {
+function updateGroupItem(newValue, oldValue) {
+
+    const query = document.querySelectorAll('#grouping-table tbody #group-select') ?? null;
+    const elements = Array.from(query);
+
+    elements.forEach((element) => {
+
+        const options = Array.from(element.options);
+        options.forEach((option) => {
+            if (option.textContent == oldValue) {
+                option.textContent = newValue;
+            }
+        });
+
+        if (element.value == oldValue) {
+            element.value = newValue;
+        }
+    });
+}
+
+function applyGroupItems(groupSelector, groups) {
 
     const currentValue = groupSelector.value;
 
@@ -63,13 +83,13 @@ function updateGroupSelector(groupSelector, groups) {
     });
 }
 
-function updateGroupSelectorAll(groups) {
+function applyGroupItemsAll(groups) {
 
     const query = document.querySelectorAll('#grouping-table tbody #group-select') ?? null;
     const groupSelectors = Array.from(query);
 
     groupSelectors.forEach((selector) => {
-        updateGroupSelector(selector, groups)
+        applyGroupItems(selector, groups)
     });
 }
 
@@ -148,7 +168,7 @@ function updateGroupingTable(settings = null) {
 
         const groupSelector = channelRow.querySelector('#group-select') ?? null;
         if (groupSelector !== null) {
-            updateGroupSelector(groupSelector, groups);
+            applyGroupItems(groupSelector, groups);
             groupSelector.value = value.group.name;
         }
     });
@@ -224,12 +244,10 @@ function importGrouping(settings) {
     updateStatusBar(`complete for grouping import.`);
 }
 
-function onMessageGrouping(message) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "import-grouping") {
         const settings = Array.from(message.data);
         importGrouping(settings);
     }
-}
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageGrouping(message));
+});

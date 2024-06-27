@@ -124,16 +124,6 @@ function onImport(dataType) {
     Show();
 }
 
-function onMessageSubpopup(message) {
-
-    if (message.type === "export") {
-        onExport(message.data);
-    }
-    else if (message.type === "import") {
-        onImport(message.dataType);
-    }
-}
-
 function setEventHandler() {
 
     const closeBtn = document.querySelector('#close-popup') ?? null;
@@ -150,9 +140,17 @@ function setEventHandler() {
     if (importJsonBtn !== null) {
         importJsonBtn.addEventListener("click", (event) => onImportClick());
     }
-
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => onMessageSubpopup(message));
 }
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.type === "export") {
+        onExport(message.data);
+    }
+    else if (message.type === "import") {
+        onImport(message.dataType);
+    }
+});
 
 function main() {
     setEventHandler();
