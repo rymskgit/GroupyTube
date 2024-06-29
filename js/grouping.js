@@ -1,4 +1,34 @@
 
+
+function filter(kind, text, element) {
+
+    if (kind === "") {
+        element.style.display = "table-row";
+        return;
+    }
+
+    let target = "";
+    if (kind === "Name") {
+        const targetElement = element.querySelector('#channel-title') ?? null;
+        if (targetElement !== null) target = targetElement.innerText.toLowerCase();
+    }
+    else if (kind === "Account") {
+        const targetElement = element.querySelector('#channel-account') ?? null;
+        if (targetElement !== null) target = targetElement.innerText.toLowerCase();
+    }
+    else if (kind === "Group") {
+        const targetElement = element.querySelector('#group-select') ?? null;
+        if (targetElement !== null) target = targetElement.value.toLowerCase();
+    }
+
+    if (target.includes(text) === false) {
+        element.style.display = "none";
+    }
+    else {
+        element.style.display = "table-row";
+    }
+}
+
 function filteringGrouping() {
 
     const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
@@ -15,34 +45,7 @@ function filteringGrouping() {
     const elements = Array.from(query);
 
     elements.forEach((element) => {
-
-        let target = "";
-        if (filterKind.value === "Name") {
-            const targetElement = element.querySelector('#channel-title') ?? null;
-            if (targetElement !== null) target = targetElement.innerText.toLowerCase();
-        }
-        else if (filterKind.value === "Account") {
-            const targetElement = element.querySelector('#channel-account') ?? null;
-            if (targetElement !== null) target = targetElement.innerText.toLowerCase();
-        }
-        else if (filterKind.value === "Group") {
-            const targetElement = element.querySelector('#group-select') ?? null;
-            if (targetElement !== null) target = targetElement.value.toLowerCase();
-        }
-
-        if (filterKind.value === "") {
-            element.style.display = "table-row";
-        }
-        else {
-            const text = filterText.value.toLowerCase();
-
-            if (target.includes(text) === false) {
-                element.style.display = "none";
-            }
-            else {
-                element.style.display = "table-row";
-            }
-        }
+        filter(filterKind.value, filterText.value.toLowerCase(), element);
     });
 }
 

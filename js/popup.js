@@ -110,6 +110,10 @@ function setFilterArea() {
         return;
     }
 
+    filterKind.addEventListener("change", (event) => {
+        filteringGrouping();
+    });
+
     filterText.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
             filteringGrouping();
