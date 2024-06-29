@@ -5,7 +5,6 @@ const rightAllowUrl = chrome.runtime.getURL("images/right_allow.png");
 const downAllowUrl = chrome.runtime.getURL("images/down_allow.png");
 const dotUrl = chrome.runtime.getURL("images/dot.png");
 
-const head = document.getElementsByTagName("head")[0];
 const style = document.createElement("style");
 style.setAttribute("type", "text/css");
 style.textContent = `
@@ -41,7 +40,7 @@ style.textContent = `
             scale:0.7;
         }
     `;
-head.appendChild(style);
+document.head.appendChild(style);
 
 
 function updateGroupStatus(element) {

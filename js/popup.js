@@ -93,6 +93,31 @@ async function loadConfig() {
     }
 }
 
+function setFilterArea() {
+
+    const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
+    if (filterKind === null) {
+        return;
+    }
+
+    filterKind.options.add(new Option(""));
+    filterKind.options.add(new Option("Name"));
+    filterKind.options.add(new Option("Account"));
+    filterKind.options.add(new Option("Group"));
+
+    const filterText = document.querySelector('#grouping-filter-text') ?? null;
+    if (filterText === null) {
+        return;
+    }
+
+    filterText.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            filteringGrouping();
+        }
+    });
+}
+
+
 async function main() {
 
     try {
@@ -101,6 +126,8 @@ async function main() {
         applyGroupNames(lastsaveGroups);
 
         updateGroupingTable(lastsaveSettings);
+
+        setFilterArea();
 
         setEventHanlder();
     }

@@ -105,10 +105,10 @@ function onAddGroupNameClick() {
 
 function validateGroupName(groupname) {
 
-    const query = documents.querySelectorAll('#group-name-table tbody #group-name');
+    const query = document.querySelectorAll('#group-name-table tbody #group-name');
     const elements = Array.from(query);
 
-    const value = elements.find((element) => element.textContent === groupname);
+    const value = elements.find((element) => element.textContent === groupname) ?? null;
 
     return value === null;
 }

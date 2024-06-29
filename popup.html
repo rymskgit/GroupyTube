@@ -46,11 +46,21 @@
         </div>
         <div>
             <h2>Channel Grouping</h2>
-            <div class="grouping-operation-area">
-                <img id="reload-grouping" class="operation-button" src="./images/reload.png" title="Reload Grouping" />
-                <img id="save-grouping" class="operation-button" src="./images/save.png" title="Save Grouping" />
-                <img id="export-grouping" class="operation-button" src="./images/export.png" title="Export Grouping" />
-                <img id="import-grouping" class="operation-button" src="./images/import.png" title="Import Grouping" />
+            <div class="grouping-control-area">
+                <div class="grouping-filter-area">
+                    <span class="font-class">filter : </span>
+                    <select id="grouping-filter-kind" class="font-class grouping-filter-kind"></select>
+                    <input type="text"  id="grouping-filter-text" value="" placeholder="filter text" />
+                </div>
+                <div class="grouping-operation-area">
+                    <img id="reload-grouping" class="operation-button" src="./images/reload.png"
+                        title="Reload Grouping" />
+                    <img id="save-grouping" class="operation-button" src="./images/save.png" title="Save Grouping" />
+                    <img id="export-grouping" class="operation-button" src="./images/export.png"
+                        title="Export Grouping" />
+                    <img id="import-grouping" class="operation-button" src="./images/import.png"
+                        title="Import Grouping" />
+                </div>
             </div>
             <div class="grouping-table-scroll">
                 <table id="grouping-table" class="font-class">

@@ -1,4 +1,51 @@
 
+function filteringGrouping() {
+
+    const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
+    if (filterKind === null) {
+        return;
+    }
+
+    const filterText = document.querySelector('#grouping-filter-text') ?? null;
+    if (filterText === null) {
+        return;
+    }
+
+    const query = document.querySelectorAll('#grouping-table tbody #channel-row');
+    const elements = Array.from(query);
+
+    elements.forEach((element) => {
+
+        let target = "";
+        if (filterKind.value === "Name") {
+            const targetElement = element.querySelector('#channel-title') ?? null;
+            if (targetElement !== null) target = targetElement.innerText.toLowerCase();
+        }
+        else if (filterKind.value === "Account") {
+            const targetElement = element.querySelector('#channel-account') ?? null;
+            if (targetElement !== null) target = targetElement.innerText.toLowerCase();
+        }
+        else if (filterKind.value === "Group") {
+            const targetElement = element.querySelector('#group-select') ?? null;
+            if (targetElement !== null) target = targetElement.value.toLowerCase();
+        }
+
+        if (filterKind.value === "") {
+            element.style.display = "table-row";
+        }
+        else {
+            const text = filterText.value.toLowerCase();
+
+            if (target.includes(text) === false) {
+                element.style.display = "none";
+            }
+            else {
+                element.style.display = "table-row";
+            }
+        }
+    });
+}
+
 function createChannelRow(channel) {
 
     const channelRow = document.createElement("tr");
@@ -8,6 +55,7 @@ function createChannelRow(channel) {
     const channelTitle = document.createElement("td");
     channelTitle.classList.add("font-class");
     channelTitle.classList.add("channel-title");
+    channelTitle.setAttribute("id", "channel-title");
     channelTitle.innerText = channel.title;
 
     // channel account
