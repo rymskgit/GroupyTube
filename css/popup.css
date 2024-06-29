@@ -174,12 +174,13 @@ option {
     display: flex;
     width: fit-content;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 .grouping-operation-area {
     display: flex;
     width: fit-content;
-    margin-left: 250px;
+    margin-left: 280px;
 }
 
 .grouping-table-scroll {
