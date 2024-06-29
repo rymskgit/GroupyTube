@@ -1,15 +1,16 @@
 body {
-    width: 700px;
-    height: 540px;
+    width: fit-content;
+    height: fit-content;
+    margin: 3px;
     background-color: #666666;
 }
 
 textarea {
-    width: 710px;
+    width: 720px;
     height: 485px;
     border: solid;
     border-width: 1px;
-    margin: 1px;
+    margin: 3px;
     resize: none;
     background-color: #CCCCCC;
     color: black !important;
@@ -17,12 +18,11 @@ textarea {
 
 #message {
     visibility: hidden;
-    width: 700px;
+    width: 560px;
     height: auto;
-    margin-left: 3px;
     border: solid;
     border-width: 0px;
-    text-align: center;
+    text-align: right;
     background-color: transparent;
     color: red;
 }
@@ -39,15 +39,16 @@ textarea {
 .operation-area {
     display: flex;
     width: fit-content;
-    position: relative;
-    left: 20px
+    position: absolute;
+    right: 10px;
+    bottom: 15px;
 }
 
 .operation-button {
     width: 32px;
     height: 32px;
     margin: 0px;
-    margin-left: 5px;
+    margin-right: 10px;
     scale: 0.7;
 }
 
@@ -58,4 +59,12 @@ textarea {
 .operation-button:active {
     position: relative;
     top: 2px;
+}
+
+.footer-area {
+    display: flex;
+    margin: 0px;
+    margin-top: 5px;
+    margin-left: 20px;
+    align-items: center;
 }

@@ -32,7 +32,7 @@ function onOkClick() {
             chrome.runtime.sendMessage({ type: "input-ok", dataType: element.dataType, data: element.value });
         }
         else if (element.edit === true) {
-            chrome.runtime.sendMessage({ type: "edit-ok", dataType: element.dataType, data: { newValue: element.value, oldValue: element.oldvalue } });
+            chrome.runtime.sendMessage({ type: "edit-ok", dataType: element.dataType, data: { newValue: element.value.substring(0, 16), oldValue: element.oldvalue } });
         }
     }
 

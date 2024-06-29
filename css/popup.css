@@ -50,8 +50,9 @@ button {
 input[type="text"] {
     height: 32px;
     border: 0px;
-    background-color: #CCCCCC;
-    color: #333333;
+    border-radius: 10px;
+    background-color: #555555;
+    color: #CCCCCC;
 }
 
 select {
@@ -214,11 +215,7 @@ option {
 }
 
 #header-group-name {
-    width: 190px;
-}
-
-#header-group-edit {
-    width: 40px;
+    width: 210px;
 }
 
 #header-group-order {
@@ -270,16 +267,23 @@ option {
 
 #subpopup-overlay iframe {
     width: 740px;
-    height: 570px;
+    height: 550px;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: #555555;
     position: absolute;
     top: 10px;
     left: 15px;
 }
 
 #inputbox-overlay iframe {
-    width: 360px;
-    height: 120px;
+    width: 350px;
+    height: 110px;
+    border: solid;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: #555555;
     position: absolute;
     top: 105px;
-    left: 10px;
+    left: 7px;
 }

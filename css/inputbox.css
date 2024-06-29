@@ -1,14 +1,18 @@
 body {
-    width: 350px;
-    height: 80px;
+    width: fit-content;
+    height: fit-content;
+    margin: 3px;
     background-color: #666666;
 }
 
 input[type="text"] {
     height: 32px;
-    border: 0px;
-    background-color: #CCCCCC;
-    color: #333333;
+    border: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    background-color: #555555;
+    color: #CCCCCC;
+    width: 200px;
 }
 
 button {
@@ -16,9 +20,10 @@ button {
     height: 32px;
     border: solid;
     border-width: 1px;
+    border-radius: 10px;
     margin: 0px;
-    background-color: #CCCCCC;
-    color: #333333;
+    background-color: #555555;
+    color: #CCCCCC;
 }
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -44,7 +49,7 @@ button {
 }
 
 .operation-button {
-    margin-top: 30px;
+    margin-top: 20px;
     margin-left: 5px;
 }
 
