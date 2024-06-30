@@ -68,21 +68,21 @@ function validateGroup(groupname) {
 
 function applyGroups(groups) {
 
-    const groupNameTbl = document.querySelector('#groups-table tbody') ?? null;
-    if (groupNameTbl === null) {
+    const groupsTbl = document.querySelector('#groups-table tbody') ?? null;
+    if (groupsTbl === null) {
         return;
     }
 
     // onece all remove
-    while (groupNameTbl.childNodes.length > 0) {
-        groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
+    while (groupsTbl.childNodes.length > 0) {
+        groupsTbl.removeChild(groupsTbl.childNodes[groupsTbl.childNodes.length - 1]);
     }
 
     const sortedGroup = groups.sort((a, b) => a.order - b.order);
 
     sortedGroup.forEach((group) => {
         const groupRow = createGroupRow(group.name);
-        groupNameTbl.appendChild(groupRow);
+        groupsTbl.appendChild(groupRow);
     });
 }
 
@@ -170,14 +170,14 @@ function inputGroupName(groupname) {
         return;
     }
 
-    const groupNameTbl = document.querySelector('#groups-table tbody') ?? null;
-    if (groupNameTbl === null) {
+    const groupsTbl = document.querySelector('#groups-table tbody') ?? null;
+    if (groupsTbl === null) {
         return
     }
 
     const groupRow = createGroupRow(groupname);
 
-    groupNameTbl.appendChild(groupRow);
+    groupsTbl.appendChild(groupRow);
 }
 
 function importGroups(groups) {
