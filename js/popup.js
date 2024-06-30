@@ -1,28 +1,28 @@
 
 function setEventHanlder() {
-    const reloadGroupNameBtn = document.querySelector('#reload-group-name') ?? null;
+    const reloadGroupNameBtn = document.querySelector('#reload-groups') ?? null;
     if (reloadGroupNameBtn !== null) {
-        reloadGroupNameBtn.addEventListener("click", (event) => onReloadGroupNameClick());
+        reloadGroupNameBtn.addEventListener("click", (event) => onReloadGroupClick());
     }
 
-    const addGroupNameBtn = document.querySelector('#add-group-name') ?? null;
+    const addGroupNameBtn = document.querySelector('#add-group') ?? null;
     if (addGroupNameBtn !== null) {
-        addGroupNameBtn.addEventListener("click", (event) => onAddGroupNameClick());
+        addGroupNameBtn.addEventListener("click", (event) => onAddGroupClick());
     }
 
-    const saveGroupNameBtn = document.querySelector('#save-group-name') ?? null;
+    const saveGroupNameBtn = document.querySelector('#save-groups') ?? null;
     if (saveGroupNameBtn !== null) {
-        saveGroupNameBtn.addEventListener("click", (event) => onSaveGroupNameClick());
+        saveGroupNameBtn.addEventListener("click", (event) => onSaveGroupClick());
     }
 
-    const exportGroupNameBtn = document.querySelector('#export-group-name') ?? null;
+    const exportGroupNameBtn = document.querySelector('#export-groups') ?? null;
     if (exportGroupNameBtn !== null) {
-        exportGroupNameBtn.addEventListener("click", (event) => onExportGroupNameClick());
+        exportGroupNameBtn.addEventListener("click", (event) => onExportGroupsClick());
     }
 
-    const importGroupNameBtn = document.querySelector('#import-group-name') ?? null;
+    const importGroupNameBtn = document.querySelector('#import-groups') ?? null;
     if (importGroupNameBtn !== null) {
-        importGroupNameBtn.addEventListener("click", (event) => onImportGroupNameClick());
+        importGroupNameBtn.addEventListener("click", (event) => onImportGroupsClick());
     }
 
     const reloadGroupingBtn = document.querySelector('#reload-grouping') ?? null;
@@ -93,43 +93,14 @@ async function loadConfig() {
     }
 }
 
-function setFilterArea() {
-
-    const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
-    if (filterKind === null) {
-        return;
-    }
-
-    filterKind.options.add(new Option(""));
-    filterKind.options.add(new Option("Name"));
-    filterKind.options.add(new Option("Account"));
-    filterKind.options.add(new Option("Group"));
-
-    const filterText = document.querySelector('#grouping-filter-text') ?? null;
-    if (filterText === null) {
-        return;
-    }
-
-    filterKind.addEventListener("change", (event) => {
-        filteringGrouping();
-    });
-
-    filterText.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            filteringGrouping();
-        }
-    });
-}
-
-
 async function main() {
 
     try {
         await loadConfig();
 
-        applyGroupNames(lastsaveGroups);
+        applyGroups(lastsaveGroups);
 
-        updateGroupingTable(lastsaveSettings);
+        applyGrouping(lastsaveSettings);
 
         setFilterArea();
 

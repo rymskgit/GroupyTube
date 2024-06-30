@@ -1,8 +1,8 @@
 
-function createGroupNameRow(groupname = "") {
+function createGroupRow(groupname = "") {
 
     const groupRow = document.createElement("tr");
-    groupRow.setAttribute("id", "group-name-row")
+    groupRow.setAttribute("id", "group-row")
 
     // group name
     const groupArea = document.createElement("td");
@@ -21,7 +21,7 @@ function createGroupNameRow(groupname = "") {
     editImg.classList.add("edit-img");
     editImg.setAttribute("src", editUrl);
     editImg.setAttribute("title", "edit");
-    editImg.addEventListener("click", (event) => onEditGroupNameClick(event));
+    editImg.addEventListener("click", (event) => onEditGroupClick(event));
     groupName.appendChild(editImg);
     groupArea.appendChild(groupName);
 
@@ -29,7 +29,7 @@ function createGroupNameRow(groupname = "") {
     const orderArea = createOrderUpDownElement();
 
     // remove
-    const removeArea = createRemoveElement(onRemoveGroupNameClick);
+    const removeArea = createRemoveElement(onRemoveGroupClick);
 
     groupRow.appendChild(groupArea);
     groupRow.appendChild(orderArea);
@@ -38,105 +38,9 @@ function createGroupNameRow(groupname = "") {
     return groupRow;
 }
 
-function applyGroupNames(groups) {
+function createJsonGroups() {
 
-    const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
-    if (groupNameTbl === null) {
-        return;
-    }
-
-    // onece all remove
-    while (groupNameTbl.childNodes.length > 0) {
-        groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
-    }
-
-    const sortedGroup = groups.sort((a, b) => a.order - b.order);
-
-    sortedGroup.forEach((group) => {
-        const groupRow = createGroupNameRow(group.name);
-        groupNameTbl.appendChild(groupRow);
-    });
-}
-
-function onEditGroupNameClick(event) {
-
-    const rowElement = event.target.parentNode.parentNode;
-
-    const group = rowElement.querySelector('#group-name') ?? null;
-    if (group === null) {
-        return;
-    }
-
-    chrome.runtime.sendMessage({ type: "edit-group-name", data: group.textContent });
-}
-
-function onEditGroupName(data) {
-
-    const query = document.querySelectorAll('#group-name-table tbody #group-name');
-    const elements = Array.from(query);
-
-    const value = elements.find((element) => element.textContent === data.oldValue);
-
-    if (value !== null) {
-        value.textContent = data.newValue;
-    }
-
-    updateGroupItem(data.newValue, data.oldValue);
-}
-
-function onRemoveGroupNameClick(event) {
-
-    const rowElement = event.target.parentNode.parentNode;
-    RemoveTableRow(rowElement);
-
-    const group = rowElement.querySelector('#group-name') ?? null;
-    updateStatusBar(`complete for group ${group?.textContent} delete.`);
-}
-
-function onReloadGroupNameClick() {
-
-    applyGroupNames(lastsaveGroups);
-}
-
-function onAddGroupNameClick() {
-
-    chrome.runtime.sendMessage({ type: "input-group-name" });
-}
-
-function validateGroupName(groupname) {
-
-    const query = document.querySelectorAll('#group-name-table tbody #group-name');
-    const elements = Array.from(query);
-
-    const value = elements.find((element) => element.textContent === groupname) ?? null;
-
-    return value === null;
-}
-
-function onInputGroupName(groupname) {
-
-    if (groupname === "") {
-        return;
-    }
-
-    if (validateGroupName(groupname) === false) {
-        updateStatusBar("invalid group name.");
-        return;
-    }
-
-    const groupNameTbl = document.querySelector('#group-name-table tbody') ?? null;
-    if (groupNameTbl === null) {
-        return
-    }
-
-    const groupRow = createGroupNameRow(groupname);
-
-    groupNameTbl.appendChild(groupRow);
-}
-
-function createJsonGroupName() {
-
-    const query = document.querySelectorAll('#group-name-table tbody #group-name') ?? null;
+    const query = document.querySelectorAll('#groups-table tbody #group-name') ?? null;
     const elements = Array.from(query);
 
     const values = [];
@@ -151,51 +55,148 @@ function createJsonGroupName() {
     return values;
 }
 
-function onSaveGroupNameClick() {
+function validateGroup(groupname) {
+
+    const query = document.querySelectorAll('#groups-table tbody #group-name');
+    const elements = Array.from(query);
+
+    const value = elements.find((element) => element.textContent === groupname) ?? null;
+
+    return value === null;
+}
+
+
+function applyGroups(groups) {
+
+    const groupNameTbl = document.querySelector('#groups-table tbody') ?? null;
+    if (groupNameTbl === null) {
+        return;
+    }
+
+    // onece all remove
+    while (groupNameTbl.childNodes.length > 0) {
+        groupNameTbl.removeChild(groupNameTbl.childNodes[groupNameTbl.childNodes.length - 1]);
+    }
+
+    const sortedGroup = groups.sort((a, b) => a.order - b.order);
+
+    sortedGroup.forEach((group) => {
+        const groupRow = createGroupRow(group.name);
+        groupNameTbl.appendChild(groupRow);
+    });
+}
+
+function onEditGroupClick(event) {
+
+    const rowElement = event.target.parentNode.parentNode;
+
+    const group = rowElement.querySelector('#group-name') ?? null;
+    if (group === null) {
+        return;
+    }
+
+    chrome.runtime.sendMessage({ type: "edit-group-name", data: group.textContent });
+}
+
+function onRemoveGroupClick(event) {
+
+    const rowElement = event.target.parentNode.parentNode;
+    RemoveTableRow(rowElement);
+
+    const group = rowElement.querySelector('#group-name') ?? null;
+    updateStatusBar(`complete for group ${group?.textContent} delete.`);
+}
+
+function onReloadGroupClick() {
+
+    applyGroups(lastsaveGroups);
+}
+
+function onAddGroupClick() {
+
+    chrome.runtime.sendMessage({ type: "input-group-name" });
+}
+
+function onSaveGroupClick() {
 
     try {
-        const groups = createJsonGroupName();
+        const groups = createJsonGroups();
 
         chrome.storage.local.set({ groups: groups }, () => {
             lastsaveGroups = groups;
             applyGroupItemsAll(groups);
 
-            updateStatusBar(`complete for group names save.`)
+            updateStatusBar(`complete for groups save.`)
         });
     } catch (error) {
-        updateStatusBar(`group names save failed.`)
-        console.log("group names save failed", error);
+        updateStatusBar(`groups save failed.`)
+        console.log("groups save failed", error);
     }
 }
 
-function onExportGroupNameClick() {
+function onExportGroupsClick() {
 
-    const values = createJsonGroupName();
+    const values = createJsonGroups();
     chrome.runtime.sendMessage({ type: "export", data: JSON.stringify(values) });
 }
 
-function onImportGroupNameClick() {
+function onImportGroupsClick() {
 
     chrome.runtime.sendMessage({ type: "import", dataType: "group-name" });
 }
 
-function importGroup(groups) {
+function editGroupName(data) {
 
-    applyGroupNames(groups);
-    onSaveGroupNameClick();
-    updateStatusBar(`complete for group names import.`);
+    const query = document.querySelectorAll('#groups-table tbody #group-name');
+    const elements = Array.from(query);
+
+    const value = elements.find((element) => element.textContent === data.oldValue);
+
+    if (value !== null) {
+        value.textContent = data.newValue;
+    }
+
+    updateGroupItem(data.newValue, data.oldValue);
+}
+
+function inputGroupName(groupname) {
+
+    if (groupname === "") {
+        return;
+    }
+
+    if (validateGroup(groupname) === false) {
+        updateStatusBar("invalid group name.");
+        return;
+    }
+
+    const groupNameTbl = document.querySelector('#groups-table tbody') ?? null;
+    if (groupNameTbl === null) {
+        return
+    }
+
+    const groupRow = createGroupRow(groupname);
+
+    groupNameTbl.appendChild(groupRow);
+}
+
+function importGroups(groups) {
+
+    applyGroups(groups);
+    onSaveGroupClick();
+    updateStatusBar(`complete for groups import.`);
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "import-group") {
         const groups = Array.from(message.data);
-        importGroup(groups);
+        importGroups(groups);
     }
     else if (message.type === "input-ok" && message.dataType === "group-name") {
-        onInputGroupName(message.data)
+        inputGroupName(message.data)
     }
     else if (message.type === "edit-ok" && message.dataType === "group-name") {
-        onEditGroupName(message.data);
+        editGroupName(message.data);
     }
 });

@@ -1,5 +1,4 @@
 
-
 function filter(kind, text, element) {
 
     if (kind === "") {
@@ -29,7 +28,7 @@ function filter(kind, text, element) {
     }
 }
 
-function filteringGrouping() {
+function filterGrouping() {
 
     const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
     if (filterKind === null) {
@@ -46,6 +45,34 @@ function filteringGrouping() {
 
     elements.forEach((element) => {
         filter(filterKind.value, filterText.value.toLowerCase(), element);
+    });
+}
+
+function setFilterArea() {
+
+    const filterKind = document.querySelector('#grouping-filter-kind') ?? null;
+    if (filterKind === null) {
+        return;
+    }
+
+    filterKind.options.add(new Option(""));
+    filterKind.options.add(new Option("Name"));
+    filterKind.options.add(new Option("Account"));
+    filterKind.options.add(new Option("Group"));
+
+    const filterText = document.querySelector('#grouping-filter-text') ?? null;
+    if (filterText === null) {
+        return;
+    }
+
+    filterKind.addEventListener("change", (event) => {
+        filterGrouping();
+    });
+
+    filterText.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            filterGrouping();
+        }
     });
 }
 
@@ -145,7 +172,31 @@ function applyGroupItemsAll(groups) {
     });
 }
 
-function mergeSettings(settings) {
+function createJsonGrouping() {
+
+    const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
+    const channels = Array.from(query)
+    const groups = lastsaveGroups;
+
+    const settings = [];
+    let order = 1;
+    channels.forEach((channel) => {
+        const queryAccount = channel.querySelector('#channel-account');
+        const queryGroup = channel.querySelector('#group-select');
+
+        if (queryAccount !== null && queryGroup !== null) {
+            const account = queryAccount.innerText;
+            const groupName = queryGroup.value;
+
+            settings.push({ account: account, groupname: groupName, order: order });
+            order++;
+        }
+    });
+
+    return settings;
+}
+
+function makeSettings(settings) {
 
     const groups = lastsaveGroups;
 
@@ -189,7 +240,7 @@ function mergeSettings(settings) {
     return channelSettings;
 }
 
-function updateGroupingTable(settings = null) {
+function applyGrouping(settings = null) {
 
     const channelGrpTbl = document.querySelector('#grouping-table tbody') ?? null;
     if (channelGrpTbl === null) {
@@ -211,7 +262,7 @@ function updateGroupingTable(settings = null) {
     }
 
     const groups = lastsaveGroups;
-    const channelSettings = mergeSettings(settings);
+    const channelSettings = makeSettings(settings);
 
     // sort by group order and set on grouping table and update group selector
     channelSettings.forEach((value) => {
@@ -234,32 +285,8 @@ function onRemoveGroupingClick(event) {
 
 function onReloadGroupingClick() {
 
-    updateGroupingTable(lastsaveSettings);
+    applyGrouping(lastsaveSettings);
     updateStatusBar(`complete for grouping reload.`)
-}
-
-function createJsonGrouping() {
-
-    const query = document.querySelectorAll('#grouping-table tbody #channel-row') ?? null;
-    const channels = Array.from(query)
-    const groups = lastsaveGroups;
-
-    const settings = [];
-    let order = 1;
-    channels.forEach((channel) => {
-        const queryAccount = channel.querySelector('#channel-account');
-        const queryGroup = channel.querySelector('#group-select');
-
-        if (queryAccount !== null && queryGroup !== null) {
-            const account = queryAccount.innerText;
-            const groupName = queryGroup.value;
-
-            settings.push({ account: account, groupname: groupName, order: order });
-            order++;
-        }
-    });
-
-    return settings;
 }
 
 function onSaveGroupingClick() {
@@ -292,7 +319,7 @@ function onImportGroupingClick() {
 
 function importGrouping(settings) {
 
-    updateGroupingTable(settings);
+    applyGrouping(settings);
     onSaveGroupingClick();
     updateStatusBar(`complete for grouping import.`);
 }
