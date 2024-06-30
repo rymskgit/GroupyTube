@@ -1,5 +1,5 @@
 
-function Show() {
+function showInputBox() {
 
     const parentDocument = window.parent.document;
 
@@ -11,7 +11,7 @@ function Show() {
     frame.style.display = "unset";
 }
 
-function Close() {
+function closeInputBox() {
 
     const parentDocument = window.parent.document;
 
@@ -36,7 +36,7 @@ function onOkClick() {
         }
     }
 
-    Close();
+    closeInputBox();
 }
 
 function onCancelClick() {
@@ -47,28 +47,38 @@ function onCancelClick() {
         chrome.runtime.sendMessage({ type: "input-cancel", dataType: element.dataType });
     }
 
-    Close();
+    closeInputBox();
 }
 
-function onInputGroupName(groupname = "", edit = false) {
+function setLabel(dataType) {
 
     const inputLabel = document.querySelector('#input-lable') ?? null;
     if (inputLabel === null) {
         return;
     }
-    inputLabel.textContent = "Group Name :"
+
+    if (dataType === "group-name") {
+        inputLabel.textContent = "Group Name :";
+    }
+    else {
+        inputLabel.textContent = "Value :";
+    }
+}
+
+function onInput(dataType, value = "", edit = false) {
 
     const element = document.querySelector('input[type="text"]') ?? null;
     if (element === null) {
         return;
     }
 
-    element.oldvalue = groupname;
-    element.value = groupname;
-    element.dataType = "group-name";
+    element.dataType = dataType;
+    element.oldvalue = value;
+    element.value = value;
     element.edit = edit;
 
-    Show();
+    setLabel(dataType);
+    showInputBox();
 }
 
 function setEventHandler() {
@@ -86,11 +96,11 @@ function setEventHandler() {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    if (message.type === "input-group-name") {
-        onInputGroupName();
+    if (message.type === "input") {
+        onInput(message.dataType);
     }
-    else if (message.type === "edit-group-name") {
-        onInputGroupName(message.data, true);
+    else if (message.type === "edit") {
+        onInput(message.dataType, message.data, true);
     }
 });
 

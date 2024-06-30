@@ -95,7 +95,7 @@ function onEditGroupClick(event) {
         return;
     }
 
-    chrome.runtime.sendMessage({ type: "edit-group-name", data: group.textContent });
+    chrome.runtime.sendMessage({ type: "edit", dataType: "group-name", data: group.textContent });
 }
 
 function onRemoveGroupClick(event) {
@@ -114,7 +114,7 @@ function onReloadGroupClick() {
 
 function onAddGroupClick() {
 
-    chrome.runtime.sendMessage({ type: "input-group-name" });
+    chrome.runtime.sendMessage({ type: "input", dataType: "group-name" });
 }
 
 function onSaveGroupClick() {
